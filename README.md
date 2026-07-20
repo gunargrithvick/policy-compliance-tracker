@@ -98,6 +98,10 @@ python -c "from tracker_store import clear_tracker_data; print(clear_tracker_dat
 
 The default analysis path is optimized for fast tracker creation. To enable Ollama-based LLM analysis:
 
+Install Ollama on your machine first. The Python dependencies include the Ollama client library, but the local Ollama server and model must be available separately.
+
+Model used for optional LLM analysis: `qwen2.5:1.5b`.
+
 ```bash
 ollama pull qwen2.5:1.5b
 ollama serve
