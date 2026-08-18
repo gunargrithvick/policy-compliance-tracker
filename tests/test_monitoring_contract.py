@@ -12,8 +12,8 @@ class ProjectTestCase(unittest.TestCase):
         self.root = Path(self.tempdir.name)
         os.environ["TRACKER_DB_PATH"] = str(self.root / "tracker.sqlite3")
 
-        import config
-        import tracker_store
+        from policy_compliance_tracker import config
+        from policy_compliance_tracker.storage import tracker_store
 
         self.config = importlib.reload(config)
         self.store = importlib.reload(tracker_store)
@@ -46,7 +46,7 @@ class TrackerSchemaExportTests(ProjectTestCase):
                 "impacted_control": "C001 Multi-Factor Authentication",
                 "control_gap": "Existing control does not mention high-value transactions.",
                 "recommended_enhancement": "Add transaction-specific MFA control language.",
-                "source_path": "data/regulations/RBI_KYC.pdf",
+                "source_path": "data/regulations/RBI_KYC_Master_Direction.pdf",
                 "source_url": "https://example.test/rbi-mfa.pdf",
                 "feed_name": "RBI Updates",
                 "downloaded_at": "2026-07-19T00:00:00Z",
@@ -57,7 +57,7 @@ class TrackerSchemaExportTests(ProjectTestCase):
         self.assertEqual(saved["policy_change_required"], 1)
         self.assertEqual(saved["source_url"], "https://example.test/rbi-mfa.pdf")
 
-        from exports import (
+        from policy_compliance_tracker.exports.exports import (
             tracker_entries_to_csv,
             tracker_entries_to_pdf,
             tracker_entries_to_xlsx,
@@ -110,6 +110,25 @@ class TrackerSchemaExportTests(ProjectTestCase):
             self.store.tracker_summary_counts()["unread_notifications"],
             0,
         )
+
+    def test_clear_tracker_data_resets_notification_sequence(self):
+        self.store.create_notification(
+            None,
+            "Critical impact",
+            "Review required.",
+            "Critical",
+        )
+        self.assertEqual(self.store.fetch_notifications(limit=1)[0]["id"], 1)
+
+        self.store.clear_tracker_data()
+
+        self.store.create_notification(
+            None,
+            "Critical impact",
+            "Review required.",
+            "Critical",
+        )
+        self.assertEqual(self.store.fetch_notifications(limit=1)[0]["id"], 1)
 
     def test_summary_counts_only_open_critical_items(self):
         self.store.save_tracker_entry(
@@ -291,7 +310,7 @@ class TrackerSchemaExportTests(ProjectTestCase):
 
 class AnalysisExtractionTests(ProjectTestCase):
     def test_deadline_extracts_compact_relative_value(self):
-        import compliance_agent
+        from policy_compliance_tracker.agent import compliance_agent
 
         compliance_agent = importlib.reload(compliance_agent)
 
@@ -302,7 +321,7 @@ class AnalysisExtractionTests(ProjectTestCase):
         self.assertEqual(deadline, "Within 30 days")
 
     def test_tracker_infers_regulator_from_pasted_text(self):
-        import compliance_agent
+        from policy_compliance_tracker.agent import compliance_agent
 
         compliance_agent = importlib.reload(compliance_agent)
         state = {
@@ -333,7 +352,7 @@ class AnalysisExtractionTests(ProjectTestCase):
 
 class RAGEvaluationTests(ProjectTestCase):
     def test_evaluation_selector_keeps_strong_secondary_evidence(self):
-        import rag_eval
+        from policy_compliance_tracker.retrieval import rag_eval
 
         rag_eval = importlib.reload(rag_eval)
 
@@ -347,8 +366,8 @@ class RAGEvaluationTests(ProjectTestCase):
 
         self.assertEqual([candidate["source"] for candidate in selected], ["policy", "control"])
 
-    def test_evaluation_selector_rejects_weak_secondary_evidence(self):
-        import rag_eval
+    def test_evaluation_selector_keeps_domain_supported_secondary_evidence(self):
+        from policy_compliance_tracker.retrieval import rag_eval
 
         rag_eval = importlib.reload(rag_eval)
         candidates = [
@@ -358,10 +377,10 @@ class RAGEvaluationTests(ProjectTestCase):
 
         selected = rag_eval.select_evaluation_candidates(candidates)
 
-        self.assertEqual([candidate["source"] for candidate in selected], ["control"])
+        self.assertEqual([candidate["source"] for candidate in selected], ["control", "policy"])
 
     def test_source_overlap_scores_partial_and_extra_matches(self):
-        import rag_eval
+        from policy_compliance_tracker.retrieval import rag_eval
 
         rag_eval = importlib.reload(rag_eval)
 
@@ -378,7 +397,7 @@ class RAGEvaluationTests(ProjectTestCase):
 
 class FeedIngestionTests(ProjectTestCase):
     def test_feed_download_registers_source_metadata_and_runs_analysis(self):
-        import regulatory_feeds
+        from policy_compliance_tracker.ingestion import regulatory_feeds
 
         regulatory_feeds = importlib.reload(regulatory_feeds)
         feed = {
@@ -411,7 +430,7 @@ class FeedIngestionTests(ProjectTestCase):
 
 class RegulationMonitorTests(ProjectTestCase):
     def test_scan_processes_first_pdf_and_marks_exact_duplicate(self):
-        import regulation_monitor
+        from policy_compliance_tracker.ingestion import regulation_monitor
 
         regulation_monitor = importlib.reload(regulation_monitor)
         regulation_dir = self.root / "regulations"

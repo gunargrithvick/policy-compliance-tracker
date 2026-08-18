@@ -1,0 +1,3566 @@
+[
+  {
+    "case_id": "mfa-high-value-transactions",
+    "category": "authentication",
+    "query": "multi factor authentication for high value transactions",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "authentication",
+      "mfa",
+      "access"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C001"
+    ],
+    "expected_obligation_terms": [
+      "authentication"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "mfa-privileged-accounts",
+    "category": "authentication",
+    "query": "MFA enabled for privileged accounts",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "mfa",
+      "privileged",
+      "accounts"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C001"
+    ],
+    "expected_obligation_terms": [
+      "mfa",
+      "privileged accounts"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "mfa-critical-systems",
+    "category": "authentication",
+    "query": "MFA for all critical systems",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "mfa",
+      "critical",
+      "systems"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C001"
+    ],
+    "expected_obligation_terms": [
+      "mfa",
+      "critical systems"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "password-minimum-length",
+    "category": "authentication",
+    "query": "passwords must contain at least 12 characters",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "password",
+      "12",
+      "characters"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C002"
+    ],
+    "expected_obligation_terms": [
+      "password",
+      "12 characters"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "password-periodic-change",
+    "category": "authentication",
+    "query": "passwords changed periodically",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "password",
+      "changed",
+      "periodically"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C002"
+    ],
+    "expected_obligation_terms": [
+      "passwords",
+      "changed"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "strong-password-requirements",
+    "category": "authentication",
+    "query": "strong password requirements",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "password",
+      "strong",
+      "requirements"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C002"
+    ],
+    "expected_obligation_terms": [
+      "password",
+      "requirements"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "least-privilege-access",
+    "category": "access-management",
+    "query": "least privilege access control",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "access",
+      "least",
+      "privilege"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C003"
+    ],
+    "expected_obligation_terms": [
+      "access",
+      "least privilege"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "quarterly-access-review",
+    "category": "access-management",
+    "query": "quarterly user access reviews",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "access",
+      "quarterly",
+      "reviews"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C003"
+    ],
+    "expected_obligation_terms": [
+      "access reviews",
+      "quarterly"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "personal-data-authorized-access",
+    "category": "privacy",
+    "query": "access to personal data restricted to authorized personnel",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "personal",
+      "data",
+      "authorized"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "personal data",
+      "authorized personnel"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "sensitive-data-encryption",
+    "category": "data-protection",
+    "query": "sensitive data encryption at rest and in transit",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "encryption",
+      "sensitive",
+      "transit"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C004"
+    ],
+    "expected_obligation_terms": [
+      "sensitive data",
+      "encrypted"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "encryption-at-rest",
+    "category": "data-protection",
+    "query": "encrypt sensitive information during storage",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "encrypt",
+      "sensitive",
+      "storage"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C004"
+    ],
+    "expected_obligation_terms": [
+      "encrypted",
+      "storage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "encryption-in-transit",
+    "category": "data-protection",
+    "query": "encrypt sensitive information during transmission",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "encrypt",
+      "sensitive",
+      "transmission"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C004"
+    ],
+    "expected_obligation_terms": [
+      "encrypted",
+      "transmission"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "consent-before-collection",
+    "category": "privacy",
+    "query": "obtain consent before collecting personal information",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "consent",
+      "collecting",
+      "personal"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C007"
+    ],
+    "expected_obligation_terms": [
+      "consent",
+      "collecting personal information"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "consent-management",
+    "category": "privacy",
+    "query": "record and manage consent for personal data processing",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "consent",
+      "personal",
+      "processing"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C007"
+    ],
+    "expected_obligation_terms": [
+      "consent",
+      "personal data"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "legitimate-data-collection",
+    "category": "privacy",
+    "query": "collect personal data only for legitimate business purposes",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "personal",
+      "data",
+      "legitimate"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "personal data",
+      "legitimate business purposes"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "retention-business-period",
+    "category": "privacy",
+    "query": "retain personal data for the required business period",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "retain",
+      "personal",
+      "period"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C008"
+    ],
+    "expected_obligation_terms": [
+      "personal data",
+      "retained"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "deletion-schedules",
+    "category": "privacy",
+    "query": "data retention and deletion schedules",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "retention",
+      "deletion",
+      "schedules"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C008"
+    ],
+    "expected_obligation_terms": [
+      "retained",
+      "deletion"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-policy-review",
+    "category": "governance",
+    "query": "privacy policy reviewed annually",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "privacy",
+      "policy",
+      "annually"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "policy",
+      "reviewed annually"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "security-policy-review",
+    "category": "governance",
+    "query": "information security policy reviewed annually",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_terms": [
+      "security",
+      "policy",
+      "annually"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "policy",
+      "reviewed annually"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "security-incident-response",
+    "category": "incident-management",
+    "query": "security incidents reported to the IT Security Team within 24 hours",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "incident",
+      "reported",
+      "24 hours"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "incidents",
+      "24 hours"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "incident-procedures",
+    "category": "incident-management",
+    "query": "maintain incident response procedures",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "incident",
+      "response",
+      "procedures"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "incident",
+      "response"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "security-log-monitoring",
+    "category": "monitoring",
+    "query": "security logs monitored regularly",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "security",
+      "logs",
+      "monitored"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C006"
+    ],
+    "expected_obligation_terms": [
+      "logs",
+      "monitored"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "suspicious-activity-reporting",
+    "category": "monitoring",
+    "query": "suspicious activities reported immediately",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_terms": [
+      "suspicious",
+      "activities",
+      "reported"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "suspicious activities",
+      "reported immediately"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "audit-logging-investigation",
+    "category": "monitoring",
+    "query": "audit logging monitoring and investigation controls",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "audit",
+      "logging",
+      "monitoring"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C006"
+    ],
+    "expected_obligation_terms": [
+      "logs",
+      "investigations"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "data-breach-management",
+    "category": "privacy",
+    "query": "data breaches reported and investigated immediately",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "breaches",
+      "reported",
+      "investigated"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "data breaches",
+      "investigated immediately"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "personal-data-protection-scope",
+    "category": "privacy",
+    "query": "protection of personal and sensitive information",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "personal",
+      "sensitive",
+      "information"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "personal",
+      "sensitive information"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "third-party-system-access",
+    "category": "access-management",
+    "query": "security policy applies to vendors and third parties",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_terms": [
+      "security",
+      "vendors",
+      "third parties"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "vendors",
+      "third parties"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "employee-privacy-responsibility",
+    "category": "governance",
+    "query": "employees handling personal data must follow privacy requirements",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "employees",
+      "personal",
+      "privacy"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "employees",
+      "privacy requirements"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "employee-security-responsibility",
+    "category": "governance",
+    "query": "employees must follow security requirements and report incidents",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_terms": [
+      "employees",
+      "security",
+      "incidents"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "employees",
+      "reporting security incidents"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "personal-data-processing-scope",
+    "category": "privacy",
+    "query": "personal information collected stored processed and transmitted",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_terms": [
+      "personal",
+      "stored",
+      "processed"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "personal information",
+      "processed"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-01",
+    "category": "business_continuity",
+    "query": "Business continuity plans for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "business continuity"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-02",
+    "category": "business_continuity",
+    "query": "Documented disaster recovery procedures for critical applications",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "disaster recovery"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-03",
+    "category": "business_continuity",
+    "query": "Record recovery time objectives for important services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery time objective"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-04",
+    "category": "business_continuity",
+    "query": "Record recovery point objectives for important services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery point objective"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-05",
+    "category": "business_continuity",
+    "query": "Test continuity plans at planned intervals",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "continuity plans"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-06",
+    "category": "business_continuity",
+    "query": "Continuity testing results and remediation owners",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "continuity testing"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-07",
+    "category": "business_continuity",
+    "query": "Backup restoration evidence for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "backup restoration"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-08",
+    "category": "business_continuity",
+    "query": "Failed backup restoration tests require remediation",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "backup restoration"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-09",
+    "category": "business_continuity",
+    "query": "Service restoration priorities for critical operations",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "service restoration"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-10",
+    "category": "business_continuity",
+    "query": "Resilience planning for essential business services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "resilience"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-11",
+    "category": "business_continuity",
+    "query": "Disaster recovery test gaps must have owners",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "disaster recovery"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-12",
+    "category": "business_continuity",
+    "query": "Critical service backup recovery procedures",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "recovery"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-13",
+    "category": "business_continuity",
+    "query": "Communication paths in continuity plans",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "continuity plans"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-14",
+    "category": "business_continuity",
+    "query": "Recovery objectives reviewed by the service owner",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery objectives"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-15",
+    "category": "business_continuity",
+    "query": "Business resilience procedures for service outages",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "business resilience"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-16",
+    "category": "business_continuity",
+    "query": "Continuity plan dependencies and restoration priorities",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "continuity plan"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-17",
+    "category": "business_continuity",
+    "query": "Backup restoration test evidence retained for review",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "restoration test"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-18",
+    "category": "business_continuity",
+    "query": "Disaster recovery readiness assessment for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "disaster recovery"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-01",
+    "category": "data_governance",
+    "query": "Data classification by sensitivity and business impact",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "data classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-02",
+    "category": "data_governance",
+    "query": "Classify information assets before sharing",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classify information"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-03",
+    "category": "data_governance",
+    "query": "Information asset classification before storage",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-04",
+    "category": "data_governance",
+    "query": "Data classification requirements for sensitive information",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "data classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-05",
+    "category": "data_governance",
+    "query": "Accountable data owners for important domains",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data owner"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-06",
+    "category": "data_governance",
+    "query": "Data ownership responsibilities for approved use",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data ownership"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-07",
+    "category": "data_governance",
+    "query": "Log material data quality issues and assign owners",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data quality"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-08",
+    "category": "data_governance",
+    "query": "Data quality expectations for operational reporting",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data quality"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-09",
+    "category": "data_governance",
+    "query": "Document lineage from source to business use",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "lineage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-10",
+    "category": "data_governance",
+    "query": "Important data flows require documented lineage",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "lineage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-11",
+    "category": "data_governance",
+    "query": "Records management schedules and ownership",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records management"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-12",
+    "category": "data_governance",
+    "query": "Business records disposed of under approved schedules",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-13",
+    "category": "data_governance",
+    "query": "Data catalog ownership for important data domains",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "ownership"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-14",
+    "category": "data_governance",
+    "query": "Sensitivity classification before data processing",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-15",
+    "category": "data_governance",
+    "query": "Data owner approval for access decisions",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data owner"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-16",
+    "category": "data_governance",
+    "query": "Lineage documentation for material reporting data",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "lineage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-17",
+    "category": "data_governance",
+    "query": "Data quality issue remediation tracking",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data quality"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-18",
+    "category": "data_governance",
+    "query": "Records retention and disposal responsibilities",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-01",
+    "category": "financial_crime",
+    "query": "Sanctions screening for customers and counterparties",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-02",
+    "category": "financial_crime",
+    "query": "Screen transactions against sanctions lists",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions lists"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-03",
+    "category": "financial_crime",
+    "query": "Sanctions list checks before transaction approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-04",
+    "category": "financial_crime",
+    "query": "Counterparty screening at defined review points",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-05",
+    "category": "financial_crime",
+    "query": "Customer due diligence before relationship approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "customer due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-06",
+    "category": "financial_crime",
+    "query": "Counterparty due diligence before material transactions",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-07",
+    "category": "financial_crime",
+    "query": "Risk-based transaction monitoring rules",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "transaction monitoring"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-08",
+    "category": "financial_crime",
+    "query": "Monitor unusual transaction patterns",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "transaction"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-09",
+    "category": "financial_crime",
+    "query": "Transaction monitoring alerts require investigation",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "monitoring alerts"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-10",
+    "category": "financial_crime",
+    "query": "Financial crime indicators escalated for review",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "financial crime"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-11",
+    "category": "financial_crime",
+    "query": "Documented due diligence for relevant customers",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-12",
+    "category": "financial_crime",
+    "query": "Risk-based monitoring for unusual activity",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "monitoring"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-13",
+    "category": "financial_crime",
+    "query": "Sanctions screening of relevant counterparties",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-14",
+    "category": "financial_crime",
+    "query": "Retain decisions for potential sanctions matches",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "sanctions"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-15",
+    "category": "financial_crime",
+    "query": "Investigation records for transaction monitoring alerts",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "monitoring alerts"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-16",
+    "category": "financial_crime",
+    "query": "Customer due diligence records for approval decisions",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "customer due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-17",
+    "category": "financial_crime",
+    "query": "Unusual transaction escalation procedures",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "unusual"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-18",
+    "category": "financial_crime",
+    "query": "Financial crime monitoring and screening controls",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012",
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "financial crime"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-01",
+    "category": "multi_policy_or_control",
+    "query": "Business continuity and data classification for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy",
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "business continuity"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-02",
+    "category": "multi_policy_or_control",
+    "query": "Data classification and continuity plan ownership",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy",
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "data classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-03",
+    "category": "multi_policy_or_control",
+    "query": "Backup restoration and data ownership responsibilities",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy",
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "backup restoration"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-04",
+    "category": "multi_policy_or_control",
+    "query": "Sanctions screening and data classification for counterparties",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy",
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C009",
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-05",
+    "category": "multi_policy_or_control",
+    "query": "Transaction monitoring and data quality review",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy",
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "transaction monitoring"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-06",
+    "category": "multi_policy_or_control",
+    "query": "Financial crime due diligence and records management",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy",
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records management"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-07",
+    "category": "multi_policy_or_control",
+    "query": "Continuity testing and backup restoration evidence",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010",
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "continuity testing"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-08",
+    "category": "multi_policy_or_control",
+    "query": "Sanctions screening and transaction monitoring controls",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012",
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-09",
+    "category": "multi_policy_or_control",
+    "query": "Data governance classification and lineage requirements",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-01",
+    "category": "irrelevant_no_match",
+    "query": "Office cafeteria menu rotation schedule",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-02",
+    "category": "irrelevant_no_match",
+    "query": "Parking lot lighting inspection schedule",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-03",
+    "category": "irrelevant_no_match",
+    "query": "Employee sports club registration process",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-04",
+    "category": "irrelevant_no_match",
+    "query": "Office furniture replacement timetable",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-05",
+    "category": "irrelevant_no_match",
+    "query": "Travel expense meal preference survey",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-06",
+    "category": "irrelevant_no_match",
+    "query": "Building garden maintenance procedures",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-07",
+    "category": "irrelevant_no_match",
+    "query": "Company event seating allocation rules",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-08",
+    "category": "irrelevant_no_match",
+    "query": "Office reception visitor badge color scheme",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-09",
+    "category": "irrelevant_no_match",
+    "query": "Cafeteria supplier menu approval workflow",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-10",
+    "category": "irrelevant_no_match",
+    "query": "Non-business artwork cataloguing process",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-11",
+    "category": "irrelevant_no_match",
+    "query": "Office parking reservation priorities",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-12",
+    "category": "irrelevant_no_match",
+    "query": "Team celebration budget request process",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-19",
+    "category": "business_continuity",
+    "query": "Critical service recovery time and recovery point objectives",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery time",
+      "recovery point"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-20",
+    "category": "business_continuity",
+    "query": "Continuity plan testing and backup restoration evidence",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010",
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "continuity plan"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-21",
+    "category": "business_continuity",
+    "query": "Disaster recovery restoration test results",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010",
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "restoration test"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-22",
+    "category": "business_continuity",
+    "query": "Resilience requirements for critical business services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "resilience"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-19",
+    "category": "data_governance",
+    "query": "Classify sensitive information before sharing",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classify"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-20",
+    "category": "data_governance",
+    "query": "Data owner approval for material data domains",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data owner"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-21",
+    "category": "data_governance",
+    "query": "Document data lineage for operational reports",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "lineage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-22",
+    "category": "data_governance",
+    "query": "Records management schedule ownership",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records management"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-19",
+    "category": "financial_crime",
+    "query": "Screen counterparties against sanctions lists",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions lists"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-20",
+    "category": "financial_crime",
+    "query": "Transaction monitoring for unusual patterns",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "transaction monitoring"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-21",
+    "category": "financial_crime",
+    "query": "Customer due diligence before approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "customer due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-22",
+    "category": "financial_crime",
+    "query": "Escalate monitoring alerts for investigation",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "monitoring alerts"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-10",
+    "category": "multi_policy_or_control",
+    "query": "Continuity planning and information classification",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy",
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "continuity planning"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-11",
+    "category": "multi_policy_or_control",
+    "query": "Sanctions screening with transaction monitoring",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012",
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-13",
+    "category": "irrelevant_no_match",
+    "query": "Office cafeteria seating reservation timetable",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-14",
+    "category": "irrelevant_no_match",
+    "query": "Company recreation equipment inventory",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-07",
+    "category": "authentication",
+    "query": "MFA for privileged access to critical systems",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C001"
+    ],
+    "expected_obligation_terms": [
+      "MFA"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-08",
+    "category": "authentication",
+    "query": "Enable MFA on every critical system",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C001"
+    ],
+    "expected_obligation_terms": [
+      "MFA"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-09",
+    "category": "authentication",
+    "query": "Password requirements of at least 12 characters",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C002"
+    ],
+    "expected_obligation_terms": [
+      "12 characters"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-10",
+    "category": "authentication",
+    "query": "Passwords must be changed periodically",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C002"
+    ],
+    "expected_obligation_terms": [
+      "changed periodically"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-11",
+    "category": "access-management",
+    "query": "Grant system access using least privilege",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "least privilege"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-12",
+    "category": "access-management",
+    "query": "Conduct quarterly user access reviews",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C003"
+    ],
+    "expected_obligation_terms": [
+      "access reviews"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-13",
+    "category": "monitoring",
+    "query": "Monitor security logs regularly",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C006"
+    ],
+    "expected_obligation_terms": [
+      "security logs"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-14",
+    "category": "monitoring",
+    "query": "Report suspicious activities immediately",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "suspicious activities"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-15",
+    "category": "incident-management",
+    "query": "Report security incidents within 24 hours",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "24 hours"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "auth-16",
+    "category": "governance",
+    "query": "Review the information security policy annually",
+    "expected_sources": [
+      "data/policies\\Information_Security_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Information Security Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "reviewed annually"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-10",
+    "category": "privacy",
+    "query": "Employee responsibilities for handling personal data",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "Responsibilities"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-11",
+    "category": "privacy",
+    "query": "Apply privacy requirements to personal data transmitted by the organization",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "transmitted by the organization"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-12",
+    "category": "privacy",
+    "query": "Encrypt sensitive data during storage and transmission",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C004"
+    ],
+    "expected_obligation_terms": [
+      "encrypted"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-13",
+    "category": "privacy",
+    "query": "Retain personal data only for the required period",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C008"
+    ],
+    "expected_obligation_terms": [
+      "retained"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-14",
+    "category": "privacy",
+    "query": "Delete personal data under approved retention schedules",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C008"
+    ],
+    "expected_obligation_terms": [
+      "Data Retention"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-15",
+    "category": "privacy",
+    "query": "Restrict personal data access to authorized personnel",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "authorized personnel"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-16",
+    "category": "incident-management",
+    "query": "Report and investigate data breaches immediately",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "reported and investigated"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-17",
+    "category": "privacy",
+    "query": "Protect personal and sensitive information processed by the organization",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "personal and sensitive information"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-18",
+    "category": "privacy",
+    "query": "Record and manage user consent for personal data processing",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C007"
+    ],
+    "expected_obligation_terms": [
+      "consent"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "privacy-19",
+    "category": "governance",
+    "query": "Review the data privacy policy annually",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "reviewed annually"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-23",
+    "category": "business_continuity",
+    "query": "Maintain documented continuity plans for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "continuity plans"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-24",
+    "category": "business_continuity",
+    "query": "Identify recovery dependencies in continuity planning",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery dependencies"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-25",
+    "category": "business_continuity",
+    "query": "Assign responsible owners for critical service continuity",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "responsible owners"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-26",
+    "category": "business_continuity",
+    "query": "Document communication paths for continuity events",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "communication paths"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-27",
+    "category": "business_continuity",
+    "query": "Set restoration priorities for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "restoration priorities"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-28",
+    "category": "business_continuity",
+    "query": "Record the recovery time objective for each critical service",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery time objective"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-29",
+    "category": "business_continuity",
+    "query": "Record a recovery point objective for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "recovery point objective"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-30",
+    "category": "business_continuity",
+    "query": "Set recovery objectives according to operational importance",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "operational importance"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-31",
+    "category": "business_continuity",
+    "query": "Test continuity procedures at planned intervals",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "tested"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-32",
+    "category": "business_continuity",
+    "query": "Test disaster recovery procedures at planned intervals",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "disaster recovery procedures"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-33",
+    "category": "business_continuity",
+    "query": "Record unresolved gaps from continuity tests",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "unresolved gaps"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-34",
+    "category": "business_continuity",
+    "query": "Assign remediation owners for continuity test gaps",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "remediation owners"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-35",
+    "category": "business_continuity",
+    "query": "Retain backup restoration evidence for critical services",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "restoration evidence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "continuity-36",
+    "category": "business_continuity",
+    "query": "Treat failed restoration tests as control gaps",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "failed restoration tests"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-23",
+    "category": "data_governance",
+    "query": "Classify information assets by sensitivity",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "sensitivity"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-24",
+    "category": "data_governance",
+    "query": "Classify data before it is stored",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classified"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-25",
+    "category": "data_governance",
+    "query": "Classify assets using business impact",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "business impact"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-26",
+    "category": "data_governance",
+    "query": "Assign an accountable data owner to each important data domain",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data owner"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-27",
+    "category": "data_governance",
+    "query": "Require an accountable owner for approved data use",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "approved use"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-28",
+    "category": "data_governance",
+    "query": "Give data owners responsibility for access decisions",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "access decisions"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-29",
+    "category": "data_governance",
+    "query": "Log data quality issues affecting material reporting",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data quality issues"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-30",
+    "category": "data_governance",
+    "query": "Assign data quality issues affecting operational decisions",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "assigned"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-31",
+    "category": "data_governance",
+    "query": "Maintain documented lineage from source to use",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "lineage"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-32",
+    "category": "data_governance",
+    "query": "Document lineage for important data flows",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "data flows"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-33",
+    "category": "data_governance",
+    "query": "Retain business records according to approved schedules",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "retained"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-34",
+    "category": "data_governance",
+    "query": "Dispose of business records according to approved schedules",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "disposed"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-35",
+    "category": "data_governance",
+    "query": "Assign documented ownership for records management",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "records management"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "governance-36",
+    "category": "data_governance",
+    "query": "Document ownership responsibilities for business records",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "ownership responsibilities"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-23",
+    "category": "financial_crime",
+    "query": "Perform customer due diligence before establishing relationships",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-24",
+    "category": "financial_crime",
+    "query": "Complete counterparty due diligence before material transactions",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "counterparties"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-25",
+    "category": "financial_crime",
+    "query": "Document customer due diligence before approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "documented due diligence"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-26",
+    "category": "financial_crime",
+    "query": "Use risk-based rules for transaction monitoring",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "risk-based rules"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-27",
+    "category": "financial_crime",
+    "query": "Monitor transactions for unusual patterns",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "suspicious patterns"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-28",
+    "category": "financial_crime",
+    "query": "Review suspicious transaction patterns",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "suspicious patterns"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-29",
+    "category": "financial_crime",
+    "query": "Screen customers against applicable sanctions lists",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions lists"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-30",
+    "category": "financial_crime",
+    "query": "Screen counterparties against applicable sanctions lists",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "counterparties",
+      "sanctions lists"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-31",
+    "category": "financial_crime",
+    "query": "Screen relevant transactions before approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "before approval"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-32",
+    "category": "financial_crime",
+    "query": "Perform sanctions screening at defined review points",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "defined review points"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-33",
+    "category": "financial_crime",
+    "query": "Escalate potential matches for investigation",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "potential matches"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-34",
+    "category": "financial_crime",
+    "query": "Escalate material monitoring alerts for investigation",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "monitoring alerts"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-35",
+    "category": "financial_crime",
+    "query": "Retain decisions and supporting financial crime records",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "supporting records"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "financial-36",
+    "category": "financial_crime",
+    "query": "Escalate financial crime indicators for review",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [],
+    "expected_obligation_terms": [
+      "financial crime indicators"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-12",
+    "category": "multi_policy_or_control",
+    "query": "Classify information and encrypt sensitive data",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy",
+      "Data Privacy Policy"
+    ],
+    "expected_controls": [
+      "C009",
+      "C004"
+    ],
+    "expected_obligation_terms": [
+      "classify",
+      "encrypted"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-13",
+    "category": "multi_policy_or_control",
+    "query": "Quarterly access reviews for authorized personal data users",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy",
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C003"
+    ],
+    "expected_obligation_terms": [
+      "access reviews"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-14",
+    "category": "multi_policy_or_control",
+    "query": "Report privacy breaches and security incidents within 24 hours",
+    "expected_sources": [
+      "data/policies\\Data_Privacy_Policy.pdf",
+      "data/policies\\Information_Security_Policy.pdf",
+      "data/controls\\Core_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Privacy Policy",
+      "Information Security Policy"
+    ],
+    "expected_controls": [
+      "C005"
+    ],
+    "expected_obligation_terms": [
+      "24 hours"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-15",
+    "category": "multi_policy_or_control",
+    "query": "Backup restoration evidence for critical service continuity",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C011"
+    ],
+    "expected_obligation_terms": [
+      "backup restoration"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-16",
+    "category": "multi_policy_or_control",
+    "query": "Data classification and accountable data ownership",
+    "expected_sources": [
+      "data/policies\\Data_Governance_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Data Governance Policy"
+    ],
+    "expected_controls": [
+      "C009"
+    ],
+    "expected_obligation_terms": [
+      "classification"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-17",
+    "category": "multi_policy_or_control",
+    "query": "Sanctions screening and customer due diligence before approval",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C012"
+    ],
+    "expected_obligation_terms": [
+      "sanctions screening"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-18",
+    "category": "multi_policy_or_control",
+    "query": "Transaction monitoring with escalation of unusual activity",
+    "expected_sources": [
+      "data/policies\\Financial_Crime_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Financial Crime Policy"
+    ],
+    "expected_controls": [
+      "C013"
+    ],
+    "expected_obligation_terms": [
+      "transaction monitoring"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "multi-19",
+    "category": "multi_policy_or_control",
+    "query": "Recovery time objectives and disaster recovery testing",
+    "expected_sources": [
+      "data/policies\\Business_Continuity_Policy.pdf",
+      "data/controls\\Supplemental_Control_Matrix.pdf"
+    ],
+    "expected_policies": [
+      "Business Continuity Policy"
+    ],
+    "expected_controls": [
+      "C010"
+    ],
+    "expected_obligation_terms": [
+      "recovery time objective"
+    ],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-15",
+    "category": "irrelevant_no_match",
+    "query": "Weekend travel itinerary for the sales team",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-16",
+    "category": "irrelevant_no_match",
+    "query": "Cafeteria menu for the summer season",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-17",
+    "category": "irrelevant_no_match",
+    "query": "Office parking allocation for visitors",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-18",
+    "category": "irrelevant_no_match",
+    "query": "Product launch color palette and poster design",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-19",
+    "category": "irrelevant_no_match",
+    "query": "Payroll holiday schedule for the next quarter",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-20",
+    "category": "irrelevant_no_match",
+    "query": "Employee gym class reservation list",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-21",
+    "category": "irrelevant_no_match",
+    "query": "Conference room layout for the annual meeting",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-22",
+    "category": "irrelevant_no_match",
+    "query": "Employee birthday calendar for the department",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  },
+  {
+    "case_id": "negative-23",
+    "category": "irrelevant_no_match",
+    "query": "Cafeteria supplier invoice reconciliation",
+    "expected_sources": [],
+    "expected_policies": [],
+    "expected_controls": [],
+    "expected_obligation_terms": [],
+    "label_status": "project-maintained-pending-human-review"
+  }
+]

@@ -1,7 +1,12 @@
-# Python cache
+# Python cache and test artifacts
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
 # Virtual environments
 venv/
@@ -10,24 +15,27 @@ env/
 
 # Environment variables
 .env
+.env.*
+!.env.example
 
-# IDE
+# IDE and notebook files
 .vscode/
 .idea/
-
-# Jupyter
 .ipynb_checkpoints/
 
-# Logs
-*.log
-
-# Build files
+# Build files and logs
 build/
 dist/
-*.egg-info/
+*.log
 
-# Chroma database
+# Generated local tracker database and Chroma retrieval index
 compliance_db/
+
+# Generated research experiment outputs
+research/results/
+
+# Streamlit secrets
+.streamlit/secrets.toml
 
 # OS files
 .DS_Store
