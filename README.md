@@ -16,7 +16,7 @@ A compliance monitoring application for legal and compliance operations. The pro
 - Data Inputs: Regulations, policy library, control matrix
 - Output: Policy impact tracker
 
-The repository includes sample regulations, policies, and controls for demonstration purposes.
+The repository includes project-created sample policies and controls for demonstration purposes. External regulation PDFs are not committed; download them from the official sources listed in `data/regulations/README.md` if you want to use the local-folder monitoring workflow.
 
 ## Architecture
 
@@ -136,6 +136,10 @@ Install dependencies:
 pip install -r requirements.txt
 pip install -e .
 ```
+
+### Regulation PDFs
+
+The public repository does not redistribute the externally sourced regulation PDFs used during local demonstrations. Download the documents from the official sources listed in [`data/regulations/README.md`](data/regulations/README.md), save them in `data/regulations`, and then use the Automation tab to scan them. You can also paste regulation text or upload a PDF directly in the Analyze tab.
 
 Run the automated tests:
 

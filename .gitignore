@@ -31,6 +31,9 @@ dist/
 # Generated local tracker database and Chroma retrieval index
 compliance_db/
 
+# Externally sourced regulation PDFs; download these locally using data/regulations/README.md
+data/regulations/*.pdf
+
 # Generated research experiment outputs
 research/results/
 
