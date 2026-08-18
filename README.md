@@ -121,7 +121,7 @@ policy-compliance-tracker/
 
 ## Installation and Run
 
-Python 3.11 or later is recommended.
+Python 3.11 or later is required.
 
 Clone the repository and open its folder:
 
@@ -135,6 +135,12 @@ Install dependencies:
 ```bash
 pip install -r requirements.txt
 pip install -e .
+```
+
+Run the automated tests:
+
+```powershell
+python -m unittest discover -s tests -v
 ```
 
 Build or rebuild the retrieval index. Rebuilding replaces only the Chroma collection and preserves tracker records:
@@ -199,11 +205,12 @@ The default analysis path uses the rule-based provider for fast tracker creation
 
 Install Ollama on your machine first. The Python dependencies include the Ollama client library, but the local Ollama server and model must be available separately.
 
+Run `ollama serve` in a separate terminal. Then, in the project terminal, run:
+
 Model used for optional LLM analysis: `qwen2.5:1.5b`.
 
-```bash
+```powershell
 ollama pull qwen2.5:1.5b
-ollama serve
 $env:AI_PROVIDER="ollama"
 python -m streamlit run app/dashboard.py
 ```
