@@ -201,14 +201,14 @@ python -c "from policy_compliance_tracker.storage.tracker_store import clear_tra
 
 ## API Configuration
 
-To use Google Gemini analysis, create a file named `.env` in the project root, in the same folder as `README.md`, and add:
+To use Google Gemini analysis, open the `.env` file in the project root, in the same folder as `README.md`, and replace the placeholder with your own key:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-3.6-flash
 ```
 
-Restart the dashboard after adding or changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Keep `.env` local and never commit or upload it.
+Restart the dashboard after changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Only the placeholder `.env` should be committed; never commit a real API key.
 
 ## Optional Ollama Local Mode
 
