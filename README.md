@@ -199,7 +199,18 @@ Use this command to clear tracker items, notifications, and audit rows:
 python -c "from policy_compliance_tracker.storage.tracker_store import clear_tracker_data; print(clear_tracker_data())"
 ```
 
-## Optional LLM Mode
+## API Configuration
+
+To use Google Gemini analysis, create a file named `.env` in the project root, in the same folder as `README.md`, and add:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-3.6-flash
+```
+
+Restart the dashboard after adding or changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Keep `.env` local and never commit or upload it.
+
+## Optional Ollama Local Mode
 
 The default analysis path uses the rule-based provider for fast tracker creation. To enable Ollama-based LLM analysis:
 
@@ -214,17 +225,6 @@ ollama pull qwen2.5:1.5b
 $env:AI_PROVIDER="ollama"
 python -m streamlit run app/dashboard.py
 ```
-
-## Optional Google Gemini Mode
-
-Create a file named `.env` in the project root, add a Gemini API key, and restart the dashboard. The Analyze tab lets the user select Gemini explicitly; the application never switches to it silently.
-
-```env
-GEMINI_API_KEY=your_new_key_here
-GEMINI_MODEL=gemini-3.6-flash
-```
-
-The `.env` file is private and is excluded from Git. The default model is `gemini-3.6-flash` and can be changed with `GEMINI_MODEL`.
 
 ## Final Evaluation Artifacts
 
