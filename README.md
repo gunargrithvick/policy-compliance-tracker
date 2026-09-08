@@ -9,6 +9,12 @@ A compliance monitoring application for legal and compliance operations. The pro
 
 This is a research and demonstration application, not legal advice, a compliance certification tool, or an official legal crosswalk.
 
+## Live Demo
+
+Try the deployed Streamlit application: [Policy Compliance Tracker](https://policy-compliance-tracker-mdu9dleyfne5kxkk7yx62k.streamlit.app/)
+
+The demo is publicly accessible for evaluation. It contains demonstration data and may require configured API credentials for Gemini or hosted Ollama analysis.
+
 ## Project Scope
 
 - Sub-domain / Process: Compliance monitoring
