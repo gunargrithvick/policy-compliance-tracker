@@ -55,7 +55,7 @@ flowchart LR
 - Use the generic GDPR + NIST Privacy Framework validation profile in `data/validation`.
 - Preserve actor, action, target, condition, deadline, and source-span fields for each extracted obligation.
 - Distinguish source-grounded obligations from candidate policy/control alignments instead of presenting heuristic mappings as verified facts.
-- Choose Rule-Based Analysis, Ollama Local Analysis, or Google Gemini API analysis from the Analyze tab.
+- Choose Rule-Based Analysis, Ollama Local/Cloud API, or Google Gemini API analysis from the Analyze tab.
 - Compare hybrid RAG retrieval with a reproducible keyword baseline through `research/run_experiments.py`, including precision, recall, F1, MRR, hit rate, context relevance, latency, and failure categories.
 - Evaluate GDPR evidence retrieval against the CC BY 4.0 ClaimRAG-LAW benchmark through `research/evaluate_claimrag.py`, with pinned revision and hash checks.
 
@@ -68,7 +68,7 @@ flowchart LR
 | Retrieval | Chroma, Hugging Face embeddings, and sentence-transformers |
 | Document Processing | pypdf |
 | Local Storage | SQLite |
-  | Analysis Engines | Deterministic rules, local/remote Ollama, or Google Gemini API |
+| Analysis Engines | Deterministic rules, local/remote Ollama, or Google Gemini API |
 | Exports | CSV, Excel, PDF, JSON, Markdown, and text |
 | Testing | Python `unittest`, pytest, Ruff, and Bandit |
 
