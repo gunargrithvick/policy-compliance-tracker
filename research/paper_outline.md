@@ -68,4 +68,4 @@ Use `research/related_work.md` for the project-specific discussion of RAG, agent
 
 Use `research/ablation_results_200.md` when reporting the component contribution results. State explicitly that source-role scoring did not change aggregate selections on this project-specific corpus, while the full selector improved performance through its evidence gates and companion-source selection.
 
-When reporting review counts, distinguish the latest Hybrid-RAG retrieval result's 9 source-retrieval errors from the latest manual-review artifact's 20 broader manual-review flags. The latter includes case-level mapping, evidence-quality, and review-gate checks, so the two counts are not contradictory and must not be compared as identical metrics.
+When reporting review counts, distinguish the latest Hybrid-RAG retrieval result's 8 source-retrieval errors from the latest manual-review artifact's 2 broader manual-review flags. The latter includes case-level mapping, evidence-quality, and review-gate checks, so the two counts are not contradictory and must not be compared as identical metrics.

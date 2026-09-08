@@ -116,7 +116,7 @@ The evaluation has four complementary parts:
 | Candidate policy-alignment rate | 1.000 |
 | Candidate control-alignment rate | 0.725 |
 | Full-pipeline human-review gate rate | 0.544 |
-| Complete automated test suite | 47 passed |
+| Complete automated test suite | 52 passed |
 
 The low ClaimRAG retrieval evidence-hit rate must be reported honestly. It
 shows that the current local GDPR retrieval configuration does not reliably

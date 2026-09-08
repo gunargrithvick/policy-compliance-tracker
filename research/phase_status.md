@@ -45,7 +45,7 @@ It records:
 - Full-pipeline evidence-chain completion: `1.000`
 - Candidate policy-alignment rate: `1.000`
 - Candidate control-alignment rate: `0.725`
-- Complete test suite: `47 passed`
+- Complete test suite: `52 passed`
 
 ## Final paper checklist
 

@@ -139,6 +139,46 @@ def doc_identity(doc: Any) -> Any:
     )
 
 
+def _indexed_source_values(vector_db: Any) -> set[str]:
+    """Return source metadata values currently stored in the Chroma index."""
+    try:
+        rows = vector_db._collection.get(include=["metadatas"])
+    except (AttributeError, TypeError, ValueError):
+        return set()
+    return {
+        str(metadata.get("source"))
+        for metadata in rows.get("metadatas", [])
+        if metadata and metadata.get("source")
+    }
+
+
+def _source_similarity_search(
+    vector_db: Any,
+    query: str,
+    source: str,
+    indexed_sources: set[str],
+) -> List[Any]:
+    """Search a source despite slash-style differences in stored metadata."""
+    source_key = normalize_source(source)
+    matching_sources = {
+        indexed_source
+        for indexed_source in indexed_sources
+        if normalize_source(indexed_source) == source_key
+    }
+    matching_sources.add(source)
+
+    hits = []
+    for indexed_source in matching_sources:
+        hits.extend(
+            vector_db.similarity_search_with_score(
+                query,
+                k=EVAL_RETRIEVAL_K,
+                filter={"source": indexed_source},
+            )
+        )
+    return hits
+
+
 def source_role_bonus(query: str, source: str) -> float:
     query_text = normalize_text(query)
     normalized_source = normalize_source(source)
@@ -304,16 +344,18 @@ def select_evaluation_candidates(candidates: List[Dict[str, Any]]) -> List[Dict[
 
 def retrieve_evaluation_docs(query: str, candidate_sources: Iterable[str]) -> List[Any]:
     vector_db = get_vector_db()
+    indexed_sources = _indexed_source_values(vector_db)
     best_match_by_source = {}
 
     for source in candidate_sources:
         if not source_topic_matches(query, source):
             continue
 
-        source_docs = vector_db.similarity_search_with_score(
+        source_docs = _source_similarity_search(
+            vector_db,
             query,
-            k=EVAL_RETRIEVAL_K,
-            filter={"source": source},
+            source,
+            indexed_sources,
         )
 
         if source_docs:
@@ -375,13 +417,15 @@ def retrieve_evaluation_docs(query: str, candidate_sources: Iterable[str]) -> Li
 def _ablation_source_candidates(query: str, candidate_sources: Iterable[str]) -> List[Dict[str, Any]]:
     """Build the same source-level candidate pool for controlled variants."""
     vector_db = get_vector_db()
+    indexed_sources = _indexed_source_values(vector_db)
     best_match_by_source = {}
 
     for source in candidate_sources:
-        source_docs = vector_db.similarity_search_with_score(
+        source_docs = _source_similarity_search(
+            vector_db,
             query,
-            k=EVAL_RETRIEVAL_K,
-            filter={"source": source},
+            source,
+            indexed_sources,
         )
         if source_docs:
             best_match_by_source[source] = min(source_docs, key=lambda item: item[1])
@@ -424,12 +468,13 @@ def retrieve_ablation_docs(
         docs = vector_db.similarity_search(query, k=EVAL_RETRIEVAL_K)
         selected = []
         seen_sources = set()
-        allowed_sources = set(candidate_sources)
+        allowed_sources = {normalize_source(source) for source in candidate_sources}
         for doc in docs:
             source = doc.metadata.get("source", "")
-            if source not in allowed_sources or source in seen_sources:
+            source_key = normalize_source(source)
+            if source_key not in allowed_sources or source_key in seen_sources:
                 continue
-            seen_sources.add(source)
+            seen_sources.add(source_key)
             selected.append(doc)
         return selected
 

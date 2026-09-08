@@ -3,13 +3,38 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+from langchain_core.documents import Document
+
 from research.keyword_baseline import score_source
 from research.metrics import metric_record
 from research.run_experiments import run_method_cases
 from research.validate_labels import validate_case
+from policy_compliance_tracker.retrieval.rag_eval import _source_similarity_search
 
 
 class ResearchEvaluationTests(unittest.TestCase):
+    def test_source_filter_accepts_mixed_slash_metadata(self):
+        class Collection:
+            def get(self, include=None):
+                return {"metadatas": [{"source": "data/policies\\Policy.pdf"}]}
+
+        class VectorDb:
+            _collection = Collection()
+
+            def similarity_search_with_score(self, query, k, filter):
+                if filter["source"] == "data/policies\\Policy.pdf":
+                    return [(Document(page_content="policy evidence", metadata=filter), 0.1)]
+                return []
+
+        hits = _source_similarity_search(
+            VectorDb(),
+            "policy evidence",
+            "data\\policies\\Policy.pdf",
+            {"data/policies\\Policy.pdf"},
+        )
+
+        self.assertEqual(len(hits), 1)
+
     def test_labelled_dataset_has_expected_fields(self):
         path = Path(__file__).resolve().parents[1] / "research" / "evaluation_cases.json"
         cases = json.loads(path.read_text(encoding="utf-8"))

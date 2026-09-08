@@ -23,7 +23,7 @@ Generated on 2026-09-08 from the current project code and evaluation corpus.
 | Candidate policy-alignment rate | 1.000 |
 | Candidate control-alignment rate | 0.725 |
 | Human-review gate rate | 0.544 |
-| Complete automated test suite | 47 passed |
+| Complete automated test suite | 52 passed |
 
 ## Interpretation and limits
 

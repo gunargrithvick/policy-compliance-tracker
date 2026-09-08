@@ -1,10 +1,10 @@
 # Retrieval Component Ablation
 
-The ablation was run on all 200 cases in `research/evaluation_cases.json` on 2026-08-17. Each variant used the same candidate-source corpus and was run in a fresh worker process.
+The ablation was run on all 200 cases in `research/evaluation_cases.json` on 2026-09-08. Each variant used the same candidate-source corpus and was run in a fresh worker process. Source metadata was compared canonically so Windows and forward-slash paths identify the same document.
 
 | Variant | Precision | Recall | F1 | Hit Rate | Error Cases |
 |---|---:|---:|---:|---:|---:|
-| Semantic Only | 0.703 | 0.602 | 0.630 | 0.587 | 108 |
+| Semantic Only | 0.670 | 0.579 | 0.605 | 0.566 | 110 |
 | Semantic + Lexical Overlap | 0.779 | 0.861 | 0.784 | 0.728 | 87 |
 | Semantic + Lexical + Source-Role Scoring | 0.779 | 0.861 | 0.784 | 0.728 | 87 |
 | Full Production Hybrid Selector | 0.983 | 0.991 | 0.985 | 0.979 | 8 |
@@ -15,7 +15,7 @@ Lexical overlap improves both recall and F1 over direct semantic retrieval. Sour
 
 The result is an ablation, not a claim that every component independently improves every corpus. The dataset is project-specific, the labels are project-maintained pending compliance review, and the eight full-hybrid failures remain included as observed limitations.
 
-Generated artifacts:
+Generated artifacts from the latest run:
 
-- `research/results/retrieval_ablation_20260817T130545Z.json`
-- `research/results/retrieval_ablation_cases_20260817T130545Z.csv`
+- `research/results/retrieval_ablation_20260908T155732Z.json`
+- `research/results/retrieval_ablation_cases_20260908T155732Z.csv`

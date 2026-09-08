@@ -21,6 +21,5 @@ alignments supported by evidence.
 
 The pinned JSON files are the measured source of truth for reported counts. At
 this revision, the GDPR retrieval file contains 149 records and the GDPR claim
-file contains 520 claims. The repository README advertises a different retrieval
-count, so the evaluator reports the downloaded count and preserves nonstandard or
-blank labels instead of silently correcting them.
+file contains 520 claims. The evaluator reports these downloaded counts and
+preserves nonstandard or blank labels instead of silently correcting them.

@@ -172,6 +172,11 @@ The public repository does not redistribute the externally sourced regulation PD
 
 ### Run the Automated Tests
 
+The automated suite currently contains 52 tests covering providers, PDF upload,
+retrieval, mapping, ingestion, tracker persistence, exports, research metrics,
+and ClaimRAG pipeline behavior. Both commands run the same test suite through
+different test runners.
+
 ```powershell
 python -m pytest -q
 python -m unittest discover -s tests -v
