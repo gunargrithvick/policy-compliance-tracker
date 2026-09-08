@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -10,6 +11,7 @@ from ..ingestion.regulation_monitor import invalid_pdf_message
 from ..ingestion.pdf_loader import PyPDFLoader
 
 COLLECTION_NAME = "langchain"
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 def load_documents():
@@ -17,13 +19,14 @@ def load_documents():
     docs = []
 
     folders = [
-        "data/regulations",
-        "data/policies",
-        "data/controls",
-        "data/frameworks",
+        PROJECT_ROOT / "data" / "regulations",
+        PROJECT_ROOT / "data" / "policies",
+        PROJECT_ROOT / "data" / "controls",
+        PROJECT_ROOT / "data" / "frameworks",
     ]
 
     for folder in folders:
+        folder_text = str(folder)
 
         if not os.path.exists(folder):
             continue
@@ -32,7 +35,7 @@ def load_documents():
 
             if file.endswith(".pdf"):
 
-                path = os.path.join(folder, file)
+                path = os.path.join(str(folder), file)
 
                 message = invalid_pdf_message(path)
                 if message:
@@ -47,11 +50,11 @@ def load_documents():
                     print(f"Skipping unreadable PDF {path}: {exc}")
                     continue
 
-                if "regulations" in folder:
+                if "regulations" in folder_text:
                     doc_type = "regulation"
-                elif "policies" in folder:
+                elif "policies" in folder_text:
                     doc_type = "policy"
-                elif "frameworks" in folder:
+                elif "frameworks" in folder_text:
                     doc_type = "framework"
                 else:
                     doc_type = "control"

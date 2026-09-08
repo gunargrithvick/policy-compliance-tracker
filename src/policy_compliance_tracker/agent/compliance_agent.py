@@ -422,7 +422,11 @@ def vector_affinity(score, best_score, worst_score):
 
 def canonical_source(source):
     """Normalize source metadata for cross-platform comparisons."""
-    return str(source or "").replace("\\", "/").strip().lower()
+    normalized = str(source or "").replace("\\", "/").strip().lower()
+    data_marker = "/data/"
+    if data_marker in normalized:
+        normalized = normalized[normalized.index(data_marker) + 1:]
+    return normalized
 
 
 def retrieve_source_docs(query, sources):
@@ -1552,6 +1556,8 @@ def save_source_text_cache(cache):
 def read_source_text(source):
 
     normalized_source = os.path.normpath(source)
+    if not os.path.isabs(normalized_source):
+        normalized_source = str(PROJECT_ROOT / normalized_source)
     cache_key = source_cache_key(normalized_source)
 
     if cache_key in SOURCE_TEXT_CACHE:
