@@ -135,6 +135,32 @@ class ResearchFeatureTests(unittest.TestCase):
             if edge["relation"] in {"mapped_to_policy", "mapped_to_control"}
         ))
 
+    def test_empty_vector_db_bootstraps_from_reference_documents(self):
+        from langchain_core.documents import Document
+
+        from policy_compliance_tracker.agent.compliance_agent import _populate_empty_vector_db
+
+        class Collection:
+            def count(self):
+                return 0
+
+        class EmptyVectorDb:
+            def __init__(self):
+                self._collection = Collection()
+                self.documents = []
+
+            def add_documents(self, documents):
+                self.documents.extend(documents)
+
+        vector_db = EmptyVectorDb()
+        with patch(
+            "policy_compliance_tracker.retrieval.ingest.load_documents",
+            return_value=[Document(page_content="Policy evidence for access review.")],
+        ):
+            _populate_empty_vector_db(vector_db)
+
+        self.assertTrue(vector_db.documents)
+
     def test_new_research_metrics_are_bounded(self):
         from research.metrics import (
             evidence_coverage,

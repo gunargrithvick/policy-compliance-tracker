@@ -94,15 +94,41 @@ def get_vector_db():
         from langchain_chroma import Chroma
         from langchain_huggingface import HuggingFaceEmbeddings
 
+        embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
         db = Chroma(
             persist_directory=CHROMA_DB_PATH,
-            embedding_function=HuggingFaceEmbeddings(
-                model_name="sentence-transformers/all-MiniLM-L6-v2"
-            ),
+            embedding_function=embeddings,
             collection_name="langchain",
         )
+        _populate_empty_vector_db(db)
 
     return db
+
+
+def _populate_empty_vector_db(vector_db):
+    """Build a missing local/cloud index from the tracked reference PDFs."""
+    try:
+        if vector_db._collection.count():  # Chroma's collection API is stable here.
+            return
+    except (AttributeError, TypeError, ValueError):
+        return
+
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+    from ..retrieval.ingest import load_documents
+
+    documents = load_documents()
+    if not documents:
+        return
+
+    chunks = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+    ).split_documents(documents)
+    if chunks:
+        vector_db.add_documents(chunks)
 
 
 def get_retriever():
