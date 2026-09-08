@@ -1326,7 +1326,7 @@ with tab_analyze:
             unsafe_allow_html=True,
         )
         if selected_provider == "gemini" and not provider_is_configured(selected_provider):
-            st.warning("Google Gemini is selected but GEMINI_API_KEY is not configured. Add it to .env before running analysis.")
+            st.warning("Google Gemini is selected but GEMINI_API_KEY is not configured. Add it to .env or Streamlit secrets before running analysis.")
         if st.button(
             "Analyze and Create Tracker Item",
             type="primary",

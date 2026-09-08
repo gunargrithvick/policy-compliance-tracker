@@ -2,7 +2,7 @@
 
 The application keeps the deterministic rule-based path separate from model
 providers. Cloud providers are called only when the user explicitly selects
-one and supplies its API key through the environment.
+one and supplies its API key through the environment or Streamlit secrets.
 """
 
 import json
@@ -54,15 +54,27 @@ def provider_label(provider: str) -> str:
     return PROVIDER_LABELS.get(provider, provider.replace("_", " ").title())
 
 
+def configured_value(name: str) -> str:
+    value = os.getenv(name, "").strip()
+    if value:
+        return value
+    try:
+        import streamlit as st
+
+        return str(st.secrets.get(name, "")).strip()
+    except Exception:  # Streamlit secrets are unavailable outside a Streamlit app.
+        return ""
+
+
 def provider_model(provider: str) -> str:
     env_name = f"{provider.upper()}_MODEL"
-    return os.getenv(env_name, DEFAULT_MODELS.get(provider, "")).strip()
+    return configured_value(env_name) or DEFAULT_MODELS.get(provider, "")
 
 
 def provider_is_configured(provider: str) -> bool:
     if provider in {"rule_based", "ollama"}:
         return True
-    return bool(os.getenv(API_KEY_ENV_VARS.get(provider, ""), "").strip())
+    return bool(configured_value(API_KEY_ENV_VARS.get(provider, "")))
 
 
 def provider_configuration_message(provider: str) -> str:
@@ -71,13 +83,13 @@ def provider_configuration_message(provider: str) -> str:
     key_name = API_KEY_ENV_VARS.get(provider)
     if provider_is_configured(provider):
         return f"{provider_label(provider)} is configured with model {provider_model(provider)}."
-    return f"Set {key_name} in .env before selecting {provider_label(provider)}."
+    return f"Set {key_name} in .env or Streamlit secrets before selecting {provider_label(provider)}."
 
 
 def _safe_error(body: str, provider: str) -> str:
     message = body[:500].replace("\n", " ").strip()
     key_name = API_KEY_ENV_VARS.get(provider)
-    secret = os.getenv(key_name, "") if key_name else ""
+    secret = configured_value(key_name) if key_name else ""
     if secret:
         message = message.replace(secret, "[redacted]")
     return message or "The provider returned an empty error response."
@@ -121,7 +133,7 @@ def _gemini_text(data: Dict[str, Any]) -> str:
 
 def _require_api_key(provider: str) -> str:
     key_name = API_KEY_ENV_VARS[provider]
-    value = os.getenv(key_name, "").strip()
+    value = configured_value(key_name)
     if not value:
         raise ProviderError(f"{key_name} is not configured for {provider_label(provider)}.")
     return value

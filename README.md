@@ -287,7 +287,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-3.6-flash
 ```
 
-Restart the dashboard after changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Never commit `.env` or a real API key; only `.env.example` belongs in source control.
+Restart the dashboard after changing the key, then select Google Gemini API in the Analyze tab. On Streamlit Community Cloud, add the key through the app's Secrets settings. Rule-Based Analysis remains the default provider. Never commit `.env` or a real API key; only `.env.example` belongs in source control.
 
 The dashboard provider is selected explicitly in the Analyze tab. The `AI_PROVIDER` setting is used by programmatic analysis calls that do not pass a provider directly.
 
