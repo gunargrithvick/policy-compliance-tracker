@@ -1584,8 +1584,12 @@ def read_source_text(source):
         disk_cache = load_source_text_cache()
         cached = disk_cache.get(cache_key)
 
-        if cached and cached.get("fingerprint") == fingerprint:
-            text = cached.get("text") or ""
+        if (
+            cached
+            and cached.get("fingerprint") == fingerprint
+            and cached.get("text")
+        ):
+            text = cached["text"]
             SOURCE_TEXT_CACHE[cache_key] = text
             return text
 
