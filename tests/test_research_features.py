@@ -21,6 +21,14 @@ class ResearchFeatureTests(unittest.TestCase):
     def tearDown(self):
         self.tempdir.cleanup()
 
+    def test_source_paths_are_compared_independently_of_slash_style(self):
+        from policy_compliance_tracker.agent.compliance_agent import canonical_source
+
+        self.assertEqual(
+            canonical_source(r"data\policies\Data_Privacy_Policy.pdf"),
+            canonical_source("data/policies/Data_Privacy_Policy.pdf"),
+        )
+
     def test_structured_research_fields_round_trip_through_sqlite(self):
         saved = self.store.save_tracker_entry(
             {

@@ -420,6 +420,11 @@ def vector_affinity(score, best_score, worst_score):
     return max(0.0, 1.0 - ((score - best_score) / score_range)) * 10.0
 
 
+def canonical_source(source):
+    """Normalize source metadata for cross-platform comparisons."""
+    return str(source or "").replace("\\", "/").strip().lower()
+
+
 def retrieve_source_docs(query, sources):
 
     vector_db = get_vector_db()
@@ -450,11 +455,12 @@ def retrieve_source_docs(query, sources):
         )
         ranked_docs.append((hybrid_score, doc, lexical_score, vector_score))
         source = doc.metadata.get("source")
+        source_key = canonical_source(source)
         if source and (
-            source not in best_doc_by_source
-            or hybrid_score > best_doc_by_source[source][0]
+            source_key not in best_doc_by_source
+            or hybrid_score > best_doc_by_source[source_key][0]
         ):
-            best_doc_by_source[source] = (
+            best_doc_by_source[source_key] = (
                 hybrid_score,
                 doc,
                 lexical_score,
@@ -467,7 +473,7 @@ def retrieve_source_docs(query, sources):
     selected_ids = set()
 
     for source in sources:
-        best_match = best_doc_by_source.get(source)
+        best_match = best_doc_by_source.get(canonical_source(source))
 
         if not best_match:
             continue
@@ -506,21 +512,44 @@ def retrieve_source_docs(query, sources):
         selected_ids.add(doc_id)
         selected_docs.append(doc)
 
-    if not selected_docs and sources:
-        # Corrective fallback for indexes whose source metadata is incomplete.
+    if len(best_doc_by_source) < len(sources) and sources:
+        # Corrective fallback for indexes whose source metadata uses a different
+        # path separator or otherwise cannot satisfy Chroma's exact filter.
         fallback_docs = vector_db.similarity_search_with_score(
             query,
-            k=TOP_K,
+            k=max(TOP_K * max(len(sources), 1), 20),
         )
-        allowed_sources = set(sources)
+        allowed_sources = {canonical_source(source) for source in sources}
+        fallback_by_source = {}
         for doc, vector_score in fallback_docs:
-            if doc.metadata.get("source") not in allowed_sources:
+            source_key = canonical_source(doc.metadata.get("source"))
+            if source_key not in allowed_sources or source_key in best_doc_by_source:
                 continue
+            lexical_score = text_relevance_score(query, doc.page_content)
+            fallback_by_source[source_key] = (
+                lexical_score,
+                doc,
+                vector_score,
+            )
+
+        for source in sources:
+            source_key = canonical_source(source)
+            match = fallback_by_source.get(source_key)
+            if not match:
+                continue
+            lexical_score, doc, vector_score = match
             doc.metadata["retrieval_strategy"] = "corrective_fallback"
             doc.metadata["retrieval_query_complexity"] = complexity
-            selected_docs.append(doc)
-            if len(selected_docs) >= TOP_K:
-                break
+            doc.metadata["retrieval_lexical_score"] = lexical_score
+            doc.metadata["retrieval_vector_score"] = vector_score
+            doc_id = getattr(doc, "id", None) or (
+                source_key,
+                doc.metadata.get("page"),
+                doc.page_content[:120],
+            )
+            if doc_id not in selected_ids:
+                selected_ids.add(doc_id)
+                selected_docs.append(doc)
 
     return selected_docs
 
