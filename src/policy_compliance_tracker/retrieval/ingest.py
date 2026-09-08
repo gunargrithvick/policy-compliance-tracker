@@ -11,7 +11,18 @@ from ..ingestion.regulation_monitor import invalid_pdf_message
 from ..ingestion.pdf_loader import PyPDFLoader
 
 COLLECTION_NAME = "langchain"
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = next(
+    (
+        candidate
+        for candidate in (
+            Path.cwd(),
+            Path(__file__).resolve().parents[3],
+            Path(__file__).resolve().parents[2],
+        )
+        if (candidate / "data").is_dir()
+    ),
+    Path.cwd(),
+)
 
 
 def load_documents():

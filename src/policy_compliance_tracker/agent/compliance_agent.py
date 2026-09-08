@@ -24,7 +24,21 @@ db = None
 retriever = None
 SOURCE_TEXT_CACHE = {}
 SOURCE_TEXT_CACHE_FILE = os.path.join(CHROMA_DB_PATH, "source_text_cache.json")
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+
+def find_project_root():
+    candidates = [
+        Path.cwd(),
+        Path(__file__).resolve().parents[3],
+        Path(__file__).resolve().parents[2],
+    ]
+    return next(
+        (candidate for candidate in candidates if (candidate / "data").is_dir()),
+        candidates[0],
+    )
+
+
+PROJECT_ROOT = find_project_root()
 VALIDATION_PROFILE_PATH = PROJECT_ROOT / "data" / "validation" / "validation_profile.json"
 
 CONTROL_FRAMEWORK_REFERENCES = {
