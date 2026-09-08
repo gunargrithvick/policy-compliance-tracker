@@ -2,6 +2,11 @@
 
 This folder contains the reproducible evaluation materials for the Policy Compliance Tracker paper.
 
+The current phase-by-phase implementation status is recorded in
+`research/phase_status.md`.
+
+The paper-ready project draft is in `research/final_paper_draft.md`.
+
 ## Research Questions
 
 1. Does the project's hybrid RAG retrieval identify the expected policy and control sources for compliance queries?
@@ -24,6 +29,8 @@ This folder contains the reproducible evaluation materials for the Policy Compli
 - `data/controls/Supplemental_Control_Matrix.pdf`
 
 The dataset is a project-specific evaluation set. Its `label_status` is `project-maintained-pending-human-review`; the project must not describe these labels as independently validated until a compliance reviewer confirms them using `research/label_review.md`.
+
+The primary public validation profile is documented in `data/validation/validation_profile.json`. It uses the downloaded GDPR regulation and NIST Privacy Framework Core 1.0 as the generic research scope. This public profile does not convert the existing project-maintained 200-case mapping labels into expert-validated labels; it supplies authoritative source material and a stable control vocabulary.
 
 ## Methods
 
@@ -69,6 +76,12 @@ The baseline tokenizes the query and each complete source document, counts meani
 - **Latency**: wall-clock retrieval time in milliseconds.
 - **Cold-start latency**: the first retrieval latency in a fresh process.
 - **Warm latency**: latency after model and index initialization.
+- **Obligation field completeness**: populated actor, action, target, condition, deadline, and source-span fields for explicit obligation cases.
+- **Source-span coverage**: explicit obligation claims whose source span is present in the supplied regulation evidence. Short retrieval queries that do not contain an explicit obligation are reported as non-obligation fallbacks and excluded from this denominator.
+- **Mapping evidence coverage**: policy/control mapping edges linked to evidence records.
+- **Unsupported-claim rate**: explicit obligation claims that have no verified source span; query-only fallbacks are excluded.
+
+The evidence tiers and reporting rules are defined in `research/validation_protocol.md`. Candidate alignments are not counted as official crosswalks.
 
 The runner also records missing sources, unexpected sources, error type, category, and per-case rankings for error analysis. Each retrieval method runs in its own worker process so its first case is a genuine method-specific cold start; later cases are warm measurements. The tracker stores structured obligations, evidence excerpts, retrieval diagnostics, review-gate metadata, and regulation-policy-control relationship edges.
 
@@ -82,6 +95,37 @@ python research/evaluate_end_to_end.py
 
 This compares expected policies, controls, and obligation terms with the generated tracker record. It reports policy precision/recall/F1, control precision/recall/F1, obligation coverage, mapping accuracy, and latency. These results measure the deterministic project path and do not establish legal correctness.
 
+## Open Legal Benchmark Evaluation
+
+Run the separate legal-evidence benchmark after rebuilding the local index:
+
+```powershell
+python research/evaluate_claimrag.py
+```
+
+This downloads the pinned ClaimRAG-LAW GDPR files, verifies their SHA-256 hashes,
+and evaluates whether local GDPR retrieval reaches the published evidence chunk.
+It also records the benchmark's published claim-label distribution. It does not
+validate this project's organization-specific policy/control mappings; those
+remain `candidate_alignment` results unless an official crosswalk supports them.
+
+ClaimRAG-LAW is used under CC BY 4.0. The attribution notice is stored in
+`data/benchmarks/claimrag_law/README.md`.
+
+To test the research gap's complete workflow, run the benchmark passages
+through the project tracker in memory:
+
+```powershell
+python research/evaluate_claimrag_pipeline.py
+```
+
+This second evaluation measures end-to-end structural completion: obligation
+extraction, source-grounded evidence, candidate policy/control alignment,
+mapping-validation status, and the human-review gate. It does not persist
+benchmark cases and does not treat project policy/control matches as gold
+labels. A `candidate_alignment` status is the expected safe result when no
+official crosswalk or organization-specific approval is supplied.
+
 Check the labels against the bundled source files:
 
 ```powershell
@@ -92,6 +136,18 @@ The validator checks source consistency for expected files, policies, and contro
 
 ## Run the Experiment
 
+To run the complete research suite and create one paper-ready report:
+
+```powershell
+python research/run_gap_suite.py
+```
+
+This runs the retrieval comparison, component ablation, labelled end-to-end
+mapping evaluation, ClaimRAG legal-evidence evaluation, ClaimRAG full-pipeline
+evaluation, and the complete test suite. The consolidated Markdown report is
+written to `research/results/`; the tracked paper-ready results snapshot is
+[`gap_evaluation_report.md`](gap_evaluation_report.md).
+
 From the repository root:
 
 ```powershell
@@ -99,7 +155,7 @@ python -m policy_compliance_tracker.retrieval.ingest
 python research/run_experiments.py
 ```
 
-The runner writes timestamped JSON and CSV files to `research/results/`. These generated outputs are ignored by Git. Use the JSON summary for the paper's results table and the CSV case rows for error analysis. The comparison includes `rag_hybrid`, `semantic_top_k`, and `keyword_baseline`, with method-specific cold-start and warm-run latency reporting. The separate component ablation is run with `python research/run_ablation.py`. Rebuilding the index removes only the Chroma collection and preserves the SQLite tracker database.
+The runner writes timestamped JSON and CSV files to `research/results/`. These generated outputs are ignored by Git. Use the tracked [`gap_evaluation_report.md`](gap_evaluation_report.md) for the paper's results snapshot, the JSON summary for detailed metrics, and the CSV case rows for error analysis. The comparison includes `rag_hybrid`, `semantic_top_k`, and `keyword_baseline`, with method-specific cold-start and warm-run latency reporting. The separate component ablation is run with `python research/run_ablation.py`. Rebuilding the index removes only the Chroma collection and preserves the SQLite tracker database.
 
 The 200-case Hybrid-RAG error analysis is documented in `research/hybrid_failure_analysis_200.md`. The listed failures are retained as observed limitations and are not removed to improve the aggregate score.
 

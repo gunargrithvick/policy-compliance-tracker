@@ -79,3 +79,42 @@ def metric_record(
     if ranking is not None:
         result["ranking"] = ranking
     return result
+
+
+def obligation_field_completeness(obligations: Iterable[Dict[str, Any]]) -> float:
+    """Measure how many explicitly modelled obligation fields are populated."""
+    fields = ("actor", "action", "target", "condition", "deadline", "source_span")
+    obligations = list(obligations)
+    if not obligations:
+        return 0.0
+    populated = sum(
+        bool(obligation.get(field))
+        for obligation in obligations
+        for field in fields
+    )
+    return round(populated / (len(obligations) * len(fields)), 3)
+
+
+def evidence_coverage(
+    mapping_claim_count: int,
+    mapping_claims_with_evidence: int,
+) -> float:
+    """Return the share of mapping claims linked to an evidence record."""
+    if mapping_claim_count <= 0:
+        return 1.0
+    return round(
+        max(0, mapping_claims_with_evidence) / mapping_claim_count,
+        3,
+    )
+
+
+def unsupported_claim_rate(claim_evidence: Dict[str, Any]) -> float:
+    """Return the proportion of extracted claims without verified source spans."""
+    claims = [
+        claim for claim in (claim_evidence.get("claims") or [])
+        if claim.get("claim_type") == "regulatory_obligation"
+    ]
+    if not claims:
+        return 0.0
+    unsupported = sum(claim.get("status") == "unsupported" for claim in claims)
+    return round(unsupported / len(claims), 3)

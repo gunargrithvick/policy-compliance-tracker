@@ -4,14 +4,14 @@ import hashlib
 import re
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional
 
 from ..config import TRACKER_DB_PATH, TRACKER_STATUS_VALUES
 
 
 def utc_now() -> str:
-    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 @contextmanager
@@ -159,15 +159,15 @@ def consolidate_duplicate_trackers() -> Dict[str, int]:
             if not duplicate_ids:
                 continue
 
-            placeholders = ",".join("?" for _ in duplicate_ids)
-            conn.execute(
-                f"""
-                UPDATE notifications
-                SET tracker_id = ?, read_at = COALESCE(read_at, ?)
-                WHERE tracker_id IN ({placeholders})
-                """,
-                [keep["tracker_id"], now, *duplicate_ids],
-            )
+            for duplicate_id in duplicate_ids:
+                conn.execute(
+                    """
+                    UPDATE notifications
+                    SET tracker_id = ?, read_at = COALESCE(read_at, ?)
+                    WHERE tracker_id = ?
+                    """,
+                    (keep["tracker_id"], now, duplicate_id),
+                )
             if keep.get("status") in RESOLVED_STATUSES:
                 conn.execute(
                     """
@@ -177,13 +177,11 @@ def consolidate_duplicate_trackers() -> Dict[str, int]:
                     """,
                     (now, keep["tracker_id"]),
                 )
-            conn.execute(
-                f"""
-                DELETE FROM tracker_entries
-                WHERE tracker_id IN ({placeholders})
-                """,
-                duplicate_ids,
-            )
+            for duplicate_id in duplicate_ids:
+                conn.execute(
+                    "DELETE FROM tracker_entries WHERE tracker_id = ?",
+                    (duplicate_id,),
+                )
             removed += len(duplicate_ids)
             groups_merged += 1
 
@@ -348,6 +346,9 @@ def init_db() -> None:
                 evidence_records TEXT,
                 retrieval_diagnostics TEXT,
                 mapping_graph TEXT,
+                claim_evidence TEXT,
+                mapping_validation TEXT,
+                validation_profile TEXT,
                  review_required INTEGER DEFAULT 0,
                  review_reason TEXT,
                  analysis_provider TEXT DEFAULT 'rule_based',
@@ -424,6 +425,9 @@ def init_db() -> None:
                 "evidence_records": "TEXT",
                 "retrieval_diagnostics": "TEXT",
                 "mapping_graph": "TEXT",
+                "claim_evidence": "TEXT",
+                "mapping_validation": "TEXT",
+                "validation_profile": "TEXT",
                  "review_required": "INTEGER DEFAULT 0",
                  "review_reason": "TEXT",
                  "analysis_provider": "TEXT DEFAULT 'rule_based'",
@@ -464,7 +468,7 @@ def init_db() -> None:
 
 def next_tracker_id() -> str:
     init_db()
-    prefix = f"RIT-{datetime.utcnow().strftime('%Y%m%d')}"
+    prefix = f"RIT-{datetime.now(timezone.utc).strftime('%Y%m%d')}"
     with connect() as conn:
         row = conn.execute(
             """
@@ -757,6 +761,9 @@ def save_tracker_entry(
         "evidence_records": json.dumps(record.get("evidence_records") or [], default=str),
         "retrieval_diagnostics": json.dumps(record.get("retrieval_diagnostics") or {}, default=str),
         "mapping_graph": json.dumps(record.get("mapping_graph") or [], default=str),
+        "claim_evidence": json.dumps(record.get("claim_evidence") or {}, default=str),
+        "mapping_validation": json.dumps(record.get("mapping_validation") or {}, default=str),
+        "validation_profile": json.dumps(record.get("validation_profile") or {}, default=str),
          "review_required": 1 if record.get("review_required") else 0,
          "review_reason": record.get("review_reason") or "",
          "analysis_provider": record.get("analysis_provider") or "rule_based",
@@ -778,6 +785,7 @@ def save_tracker_entry(
                 source_url, feed_name, downloaded_at, regulator_source,
                 regulation_fingerprint, analysis_json, obligations_structured,
                  evidence_records, retrieval_diagnostics, mapping_graph,
+                 claim_evidence, mapping_validation, validation_profile,
                  review_required, review_reason, analysis_provider
             )
             VALUES (
@@ -794,6 +802,7 @@ def save_tracker_entry(
                 :feed_name, :downloaded_at, :regulator_source,
                 :regulation_fingerprint, :analysis_json, :obligations_structured,
                  :evidence_records, :retrieval_diagnostics, :mapping_graph,
+                 :claim_evidence, :mapping_validation, :validation_profile,
                  :review_required, :review_reason, :analysis_provider
             )
             ON CONFLICT(tracker_id) DO UPDATE SET
@@ -836,6 +845,9 @@ def save_tracker_entry(
                 evidence_records = excluded.evidence_records,
                 retrieval_diagnostics = excluded.retrieval_diagnostics,
                  mapping_graph = excluded.mapping_graph,
+                 claim_evidence = excluded.claim_evidence,
+                 mapping_validation = excluded.mapping_validation,
+                 validation_profile = excluded.validation_profile,
                  review_required = excluded.review_required,
                  review_reason = excluded.review_reason,
                  analysis_provider = excluded.analysis_provider

@@ -7,6 +7,8 @@
 
 A compliance monitoring application for legal and compliance operations. The project analyzes regulatory updates, maps them to internal policies and controls, and creates a policy impact tracker for policy-review and remediation workflow.
 
+This is a research and demonstration application, not legal advice, a compliance certification tool, or an official legal crosswalk.
+
 ## Project Scope
 
 - Sub-domain / Process: Compliance monitoring
@@ -50,8 +52,12 @@ flowchart LR
 - Maintain audit trail for tracker and monitoring actions.
 - Export tracker data as CSV, Excel, PDF, JSON, Markdown, and text.
 - Evaluate retrieval quality through the RAG Evaluation tab.
+- Use the generic GDPR + NIST Privacy Framework validation profile in `data/validation`.
+- Preserve actor, action, target, condition, deadline, and source-span fields for each extracted obligation.
+- Distinguish source-grounded obligations from candidate policy/control alignments instead of presenting heuristic mappings as verified facts.
 - Choose Rule-Based Analysis, Ollama Local Analysis, or Google Gemini API analysis from the Analyze tab.
 - Compare hybrid RAG retrieval with a reproducible keyword baseline through `research/run_experiments.py`, including precision, recall, F1, MRR, hit rate, context relevance, latency, and failure categories.
+- Evaluate GDPR evidence retrieval against the CC BY 4.0 ClaimRAG-LAW benchmark through `research/evaluate_claimrag.py`, with pinned revision and hash checks.
 
 ## Technology Stack
 
@@ -64,7 +70,7 @@ flowchart LR
 | Local Storage | SQLite |
 | Analysis Engines | Deterministic rules, Ollama `qwen2.5:1.5b`, or Google Gemini API |
 | Exports | CSV, Excel, PDF, JSON, Markdown, and text |
-| Testing | Python `unittest` |
+| Testing | Python `unittest`, pytest, Ruff, and Bandit |
 
 ## UI Screenshots
 
@@ -72,25 +78,37 @@ flowchart LR
 
 ![Analyze](docs/screenshots/01_analyze.png)
 
+Completed rule-based analysis showing the extracted obligation, evidence-backed summary, and deadline.
+
 ### Tracker
 
 ![Tracker](docs/screenshots/02_tracker.png)
+
+Persistent compliance register with status, priority, owner, regulator, and policy-change fields.
 
 ### Alerts
 
 ![Alerts](docs/screenshots/03_alerts.png)
 
+Alert history showing reviewed critical notifications and their linked tracker items.
+
 ### Automation
 
 ![Automation](docs/screenshots/04_automation.png)
+
+Operational controls for folder scans, configured feed checks, and regulator feed coverage.
 
 ### RAG Evaluation
 
 ![RAG Evaluation](docs/screenshots/05_rag_evaluation.png)
 
+Retrieval-quality check with the evaluation explanation and recent precision history.
+
 ### Audit Trail
 
 ![Audit Trail](docs/screenshots/06_audit_trail.png)
+
+Traceable event history for tracker updates and scheduled monitoring activity.
 
 ## Repository Structure
 
@@ -137,17 +155,32 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### Regulation PDFs
+For development and the complete audit/research tooling:
+
+```powershell
+pip install -r requirements-dev.txt
+```
+
+### Add Regulation PDFs (Optional)
 
 The public repository does not redistribute the externally sourced regulation PDFs used during local demonstrations. Download the documents from the official sources listed in [`data/regulations/README.md`](data/regulations/README.md), save them in `data/regulations`, and then use the Automation tab to scan them. You can also paste regulation text or upload a PDF directly in the Analyze tab.
 
-Run the automated tests:
+### Run the Automated Tests
 
 ```powershell
+python -m pytest -q
 python -m unittest discover -s tests -v
 ```
 
-Build or rebuild the retrieval index. Rebuilding replaces only the Chroma collection and preserves tracker records:
+### Run the Local Demonstration
+
+```powershell
+python app/demo_end_to_end.py
+```
+
+### Build or Rebuild the Retrieval Index
+
+Rebuilding replaces only the Chroma collection and preserves tracker records:
 
 ```bash
 python -m policy_compliance_tracker.retrieval.ingest
@@ -158,6 +191,8 @@ Run one local monitoring cycle without external feeds:
 ```bash
 python -m policy_compliance_tracker.ingestion.scheduled_monitor --once --skip-feeds
 ```
+
+When external feeds are enabled, ingestion retries failed requests, tries configured official fallback pages, and reuses the last cached feed page when the live source is temporarily unavailable. If a regulator moves to a completely new unconfigured domain, update the feed configuration in `src/policy_compliance_tracker/ingestion/regulatory_feeds.py`.
 
 Run the retrieval evaluation after building the retrieval index:
 
@@ -181,7 +216,43 @@ Run the end-to-end policy/control mapping evaluation:
 python research/evaluate_end_to_end.py
 ```
 
-The evaluation set, label-review process, metrics, protocol, and limitations are documented in `research/README.md`.
+Run the separate open legal-benchmark evaluation:
+
+```powershell
+python research/evaluate_claimrag.py
+```
+
+Run the same pinned legal passages through the complete in-memory tracker flow:
+
+```powershell
+python research/evaluate_claimrag_pipeline.py
+```
+
+This reports structural completion and review-gate behavior. It does not write
+benchmark cases to the tracker database, and it does not claim that
+organization-specific policy/control mappings are externally validated.
+
+To run all research evaluations and tests together:
+
+```powershell
+python research/run_gap_suite.py
+```
+
+This downloads the pinned ClaimRAG-LAW GDPR files into the ignored
+`data/benchmarks/claimrag_law` directory and records attribution, license,
+revision, and hashes. It evaluates legal evidence retrieval only; it does not
+turn the project's policy/control mappings into verified or official mappings.
+
+The evaluation set, validation profile, evidence tiers, metrics, protocol, and limitations are documented in `research/README.md` and `research/validation_protocol.md`.
+
+### Generic validation profile
+
+The primary research scope is GDPR obligation extraction with the NIST Privacy Framework Core 1.0 as a public control vocabulary. The downloaded source files are stored at:
+
+- `data/regulations/EU_GDPR_Regulation.pdf`
+- `data/frameworks/NIST_Privacy_Framework_Core_v1.0.pdf`
+
+The NIST Privacy Framework is voluntary guidance, not a law. The application labels mappings as `framework_supported`, `candidate_alignment`, or `needs_review`; it does not claim legal certification.
 
 Start the dashboard:
 
@@ -195,6 +266,10 @@ Open:
 http://localhost:8501/
 ```
 
+The dashboard is configured to bind to localhost by default. Do not expose it
+to a public or shared network without adding authentication and reviewing the
+data-handling implications of uploaded regulatory and policy documents.
+
 ## Clear Tracker Data
 
 Use this command to clear tracker items, notifications, and audit rows:
@@ -205,14 +280,20 @@ python -c "from policy_compliance_tracker.storage.tracker_store import clear_tra
 
 ## API Configuration
 
-To use Google Gemini analysis, open the `.env` file in the project root, in the same folder as `README.md`, and replace the placeholder with your own key:
+To use Google Gemini analysis, copy `.env.example` to `.env` and add your own key:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-3.6-flash
 ```
 
-Restart the dashboard after changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Only the placeholder `.env` should be committed; never commit a real API key.
+Restart the dashboard after changing the key, then select Google Gemini API in the Analyze tab. Rule-Based Analysis remains the default provider. Never commit `.env` or a real API key; only `.env.example` belongs in source control.
+
+The dashboard provider is selected explicitly in the Analyze tab. The `AI_PROVIDER` setting is used by programmatic analysis calls that do not pass a provider directly.
+
+If a Gemini key was ever committed, revoke it in Google AI Studio and create a
+new key. Removing `.env` from the current checkout does not erase old Git
+history or invalidate an already issued key.
 
 ## Optional Ollama Local Mode
 
@@ -220,19 +301,20 @@ The default analysis path uses the rule-based provider for fast tracker creation
 
 Install Ollama on your machine first. The Python dependencies include the Ollama client library, but the local Ollama server and model must be available separately.
 
-Run `ollama serve` in a separate terminal. Then, in the project terminal, run:
+Run `ollama serve` in a separate terminal. Then, in the project terminal, pull the model and start the dashboard:
 
 Model used for optional LLM analysis: `qwen2.5:1.5b`.
 
 ```powershell
 ollama pull qwen2.5:1.5b
-$env:AI_PROVIDER="ollama"
 python -m streamlit run app/dashboard.py
 ```
 
+In the dashboard's Analyze tab, select `Ollama Local LLM` as the Analysis Engine.
+
 ## Final Evaluation Artifacts
 
-The 200 cases in `research/evaluation_cases.json` include the original 30-case frozen baseline plus an expanded evaluation set covering security, privacy, continuity, data governance, financial-crime, multi-policy, and no-match scenarios. Running the research commands generates timestamped retrieval comparisons, end-to-end mapping results, label consistency checks, and manual-review checks in `research/results/`; these generated files are intentionally excluded from Git and can be recreated locally. The labels remain project-maintained and should not be described as independently validated without a separate compliance review.
+The 200 cases in `research/evaluation_cases.json` include the original 30-case frozen baseline plus an expanded evaluation set covering security, privacy, continuity, data governance, financial-crime, multi-policy, and no-match scenarios. Running the research commands generates timestamped retrieval comparisons, end-to-end mapping results, label consistency checks, manual-review checks, and ClaimRAG-LAW benchmark results in `research/results/`; these generated files are intentionally excluded from Git and can be recreated locally. The 200 project cases remain project-maintained and should not be described as independently validated. ClaimRAG-LAW is reported separately under its CC BY 4.0 attribution terms.
 
 ## Author
 

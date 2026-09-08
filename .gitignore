@@ -37,6 +37,10 @@ data/regulations/*.pdf
 # Generated research experiment outputs
 research/results/
 
+# Downloaded external benchmark data; retrieve with research/evaluate_claimrag.py
+data/benchmarks/claimrag_law/*.json
+data/benchmarks/claimrag_law/manifest.json
+
 # Streamlit secrets
 .streamlit/secrets.toml
 

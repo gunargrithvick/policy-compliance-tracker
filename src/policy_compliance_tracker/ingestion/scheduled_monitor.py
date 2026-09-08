@@ -2,7 +2,7 @@ import argparse
 import json
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict
 
 from ..config import REGULATION_DIR
@@ -14,13 +14,17 @@ from .regulatory_feeds import DEFAULT_FEEDS, ingest_feeds
 DEFAULT_INTERVAL_SECONDS = int(os.getenv("MONITOR_INTERVAL_SECONDS", "3600"))
 
 
+def utc_timestamp() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
 def run_monitor_cycle(
     include_feeds: bool = True,
     feed_limit: int = 5,
     analyze_feeds: bool = True,
 ) -> Dict[str, Any]:
     init_db()
-    started_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    started_at = utc_timestamp()
     result: Dict[str, Any] = {
         "started_at": started_at,
         "regulation_dir": REGULATION_DIR,
@@ -36,7 +40,7 @@ def run_monitor_cycle(
         )
 
     result["scan_results"] = scan_regulation_directory(REGULATION_DIR)
-    result["finished_at"] = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    result["finished_at"] = utc_timestamp()
 
     log_audit(
         "scheduled_monitor",

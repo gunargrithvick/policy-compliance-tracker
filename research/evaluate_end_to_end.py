@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 try:
     from policy_compliance_tracker.agent import compliance_agent  # noqa: E402
@@ -26,6 +28,12 @@ except ModuleNotFoundError as exc:
         f"Missing project dependency '{exc.name}'. Install the project dependencies with: "
         "python -m pip install -r requirements.txt"
     ) from exc
+
+from research.metrics import (  # noqa: E402
+    evidence_coverage,
+    obligation_field_completeness,
+    unsupported_claim_rate,
+)
 
 
 DEFAULT_CASES = ROOT / "research" / "evaluation_cases.json"
@@ -92,6 +100,9 @@ def evaluate_case(case):
     policy_scores = set_scores(case.get("expected_policies", []), extract_policies(policy_text))
     control_scores = set_scores(case.get("expected_controls", []), extract_controls(control_text))
     mapping_accuracy = mean([policy_scores[2], control_scores[2], obligation_coverage])
+    obligations = record.get("obligations_structured") or []
+    claim_evidence = record.get("claim_evidence") or {}
+    mapping_validation = record.get("mapping_validation") or {}
     return {
         "case_id": case["case_id"],
         "category": case.get("category", "unspecified"),
@@ -104,6 +115,17 @@ def evaluate_case(case):
         "control_f1": round(control_scores[2], 3),
         "obligation_coverage": round(obligation_coverage, 3),
         "mapping_accuracy": round(mapping_accuracy, 3),
+        "obligation_field_completeness": obligation_field_completeness(obligations),
+        "source_span_coverage": round(claim_evidence.get("claim_coverage", 0.0), 3),
+        "explicit_obligation_claim_count": claim_evidence.get("explicit_claim_count", 0),
+        "verified_obligation_claim_count": claim_evidence.get("verified_claim_count", 0),
+        "non_obligation_fallback_count": claim_evidence.get("non_obligation_fallback_count", 0),
+        "mapping_evidence_coverage": evidence_coverage(
+            claim_evidence.get("mapping_claim_count", 0),
+            claim_evidence.get("mapping_claims_with_evidence", 0),
+        ),
+        "unsupported_claim_rate": unsupported_claim_rate(claim_evidence),
+        "mapping_validation_status": mapping_validation.get("status", "unknown"),
         "returned_policies": extract_policies(policy_text),
         "returned_controls": extract_controls(control_text),
         "review_required": bool(record.get("review_required")),
@@ -139,6 +161,10 @@ def main():
             "policy_precision", "policy_recall", "policy_f1",
             "control_precision", "control_recall", "control_f1",
             "obligation_coverage", "mapping_accuracy", "latency_ms",
+            "obligation_field_completeness", "source_span_coverage",
+            "mapping_evidence_coverage", "unsupported_claim_rate",
+            "mapping_validation_status", "explicit_obligation_claim_count",
+            "verified_obligation_claim_count", "non_obligation_fallback_count",
         ],
         "summary": {
             "cases": len(rows),
@@ -146,6 +172,29 @@ def main():
             "error_cases": len(rows) - len(successful),
             "mean_mapping_accuracy": round(mean(row["mapping_accuracy"] for row in successful), 3) if successful else 0.0,
             "mean_obligation_coverage": round(mean(row["obligation_coverage"] for row in successful), 3) if successful else 0.0,
+            "mean_obligation_field_completeness_on_explicit_cases": round(mean(
+                row["obligation_field_completeness"]
+                for row in successful
+                if row["explicit_obligation_claim_count"]
+            ), 3) if any(row["explicit_obligation_claim_count"] for row in successful) else 0.0,
+            "source_span_coverage_on_explicit_claims": round(
+                sum(row["verified_obligation_claim_count"] for row in successful)
+                / max(sum(row["explicit_obligation_claim_count"] for row in successful), 1),
+                3,
+            ),
+            "mean_mapping_evidence_coverage": round(mean(row["mapping_evidence_coverage"] for row in successful), 3) if successful else 0.0,
+            "unsupported_claim_rate_on_explicit_claims": round(
+                1 - (
+                    sum(row["verified_obligation_claim_count"] for row in successful)
+                    / max(sum(row["explicit_obligation_claim_count"] for row in successful), 1)
+                ),
+                3,
+            ),
+            "explicit_obligation_cases": sum(
+                bool(row["explicit_obligation_claim_count"]) for row in successful
+            ),
+            "explicit_obligation_claims": sum(row["explicit_obligation_claim_count"] for row in successful),
+            "non_obligation_fallbacks": sum(row["non_obligation_fallback_count"] for row in successful),
             "mean_latency_ms": round(mean(row["latency_ms"] for row in successful), 2) if successful else 0.0,
         },
         "case_results": rows,

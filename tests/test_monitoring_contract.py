@@ -396,6 +396,12 @@ class RAGEvaluationTests(ProjectTestCase):
 
 
 class FeedIngestionTests(ProjectTestCase):
+    def test_feed_fetch_rejects_non_https_urls(self):
+        from policy_compliance_tracker.ingestion import regulatory_feeds
+
+        with self.assertRaises(ValueError):
+            regulatory_feeds.fetch_url("http://example.test/update.pdf")
+
     def test_feed_download_registers_source_metadata_and_runs_analysis(self):
         from policy_compliance_tracker.ingestion import regulatory_feeds
 
@@ -426,6 +432,60 @@ class FeedIngestionTests(ProjectTestCase):
         self.assertEqual(record["feed_name"], "Example Regulator")
         self.assertEqual(record["source_url"], "https://example.test/update.pdf")
         self.assertEqual(record["regulator_source"], "EXR")
+
+    def test_feed_page_uses_official_fallback_and_caches_it(self):
+        from policy_compliance_tracker.ingestion import regulatory_feeds
+
+        regulatory_feeds = importlib.reload(regulatory_feeds)
+        feed = {
+            "name": "Example Regulator",
+            "regulator": "EXR",
+            "url": "https://old.example.test/updates",
+            "fallback_urls": ["https://new.example.test/updates"],
+        }
+        with patch.object(
+            regulatory_feeds,
+            "fetch_url",
+            side_effect=[OSError("old domain unavailable"), b"<a href='notice.pdf'>Notice</a>"],
+        ) as fetch_mock:
+            page, source_url, cache_used = regulatory_feeds.fetch_feed_page(feed, str(self.root))
+
+        self.assertIn(b"notice.pdf", page)
+        self.assertEqual(source_url, "https://new.example.test/updates")
+        self.assertFalse(cache_used)
+        self.assertEqual(fetch_mock.call_count, 2)
+
+    def test_feed_page_uses_cached_copy_when_all_sources_are_unavailable(self):
+        from policy_compliance_tracker.ingestion import regulatory_feeds
+
+        regulatory_feeds = importlib.reload(regulatory_feeds)
+        feed = {
+            "name": "Example Regulator",
+            "regulator": "EXR",
+            "url": "https://example.test/updates",
+            "fallback_urls": ["https://backup.example.test/updates"],
+        }
+        cache_path = Path(regulatory_feeds._feed_cache_path(str(self.root), feed["name"]))
+        cache_path.parent.mkdir(parents=True)
+        cache_path.write_bytes(b"<a href='cached-notice.pdf'>Cached notice</a>")
+        metadata_path = Path(
+            regulatory_feeds._feed_cache_metadata_path(str(self.root), feed["name"])
+        )
+        metadata_path.write_text(
+            '{"source_url": "https://backup.example.test/updates"}',
+            encoding="utf-8",
+        )
+
+        with patch.object(
+            regulatory_feeds,
+            "fetch_url",
+            side_effect=OSError("all sources unavailable"),
+        ):
+            page, source_url, cache_used = regulatory_feeds.fetch_feed_page(feed, str(self.root))
+
+        self.assertIn(b"cached-notice.pdf", page)
+        self.assertEqual(source_url, "https://backup.example.test/updates")
+        self.assertTrue(cache_used)
 
 
 class RegulationMonitorTests(ProjectTestCase):

@@ -8,7 +8,7 @@ import argparse
 import csv
 import json
 import statistics
-import subprocess
+import subprocess  # nosec B404
 import sys
 import tempfile
 import time
@@ -171,7 +171,9 @@ def main() -> None:
                 "--worker-variant", variant,
                 "--worker-output", str(worker_output),
             ]
-            completed = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+            completed = subprocess.run(  # nosec B603
+                command, cwd=ROOT, capture_output=True, text=True
+            )
             if completed.returncode:
                 raise RuntimeError(f"{variant} worker failed:\n{completed.stderr[-2000:]}")
             rows.extend(json.loads(worker_output.read_text(encoding="utf-8")))

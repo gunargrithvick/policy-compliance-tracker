@@ -8,13 +8,13 @@ import argparse
 import csv
 import json
 import statistics
-import subprocess
+import subprocess  # nosec B404
 import sys
 import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, List
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -221,7 +221,7 @@ def main() -> None:
                 "--worker-output",
                 str(worker_output),
             ]
-            completed = subprocess.run(
+            completed = subprocess.run(  # nosec B603
                 command,
                 cwd=ROOT,
                 capture_output=True,

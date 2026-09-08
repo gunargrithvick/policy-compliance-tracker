@@ -87,6 +87,81 @@ class ResearchFeatureTests(unittest.TestCase):
             0,
         )
 
+    def test_obligation_extraction_preserves_explicit_structure(self):
+        from policy_compliance_tracker.agent.compliance_agent import extract_regulatory_obligations
+
+        obligations = extract_regulatory_obligations(
+            "Under GDPR Article 33, controllers must notify the supervisory authority within 72 hours if a breach occurs."
+        )
+
+        self.assertEqual(len(obligations), 1)
+        self.assertEqual(obligations[0]["actor"], "controllers")
+        self.assertEqual(obligations[0]["action"], "notify")
+        self.assertEqual(obligations[0]["target"], "the supervisory authority")
+        self.assertEqual(obligations[0]["deadline"], "Within 72 hours")
+        self.assertEqual(obligations[0]["condition"], "if a breach occurs")
+        self.assertEqual(obligations[0]["validation_status"], "source_grounded")
+
+    def test_non_obligation_fallback_is_not_called_verified(self):
+        from policy_compliance_tracker.agent import compliance_agent
+
+        result = compliance_agent.analyze_regulation(
+            "A privacy notice exists.",
+            persist=False,
+            analysis_provider="rule_based",
+        )
+
+        self.assertEqual(
+            result["tracker_record"]["claim_evidence"]["status"],
+            "not_applicable",
+        )
+
+    def test_mapping_output_distinguishes_candidate_alignment_from_source_grounding(self):
+        from policy_compliance_tracker.agent import compliance_agent
+
+        result = compliance_agent.analyze_regulation(
+            "Controllers must delete personal data according to the retention schedule.",
+            persist=False,
+            analysis_provider="rule_based",
+        )
+        record = result["tracker_record"]
+
+        self.assertEqual(record["claim_evidence"]["status"], "source_grounded")
+        self.assertEqual(record["mapping_validation"]["status"], "candidate_alignment")
+        self.assertTrue(record["mapping_graph"])
+        self.assertTrue(all(
+            edge["validation_status"] == "candidate_alignment"
+            for edge in record["mapping_graph"]
+            if edge["relation"] in {"mapped_to_policy", "mapped_to_control"}
+        ))
+
+    def test_new_research_metrics_are_bounded(self):
+        from research.metrics import (
+            evidence_coverage,
+            obligation_field_completeness,
+            unsupported_claim_rate,
+        )
+
+        self.assertEqual(
+            obligation_field_completeness([{
+                "actor": "controllers",
+                "action": "notify",
+                "target": "authority",
+                "condition": None,
+                "deadline": "Within 72 hours",
+                "source_span": "Controllers must notify authority within 72 hours.",
+            }]),
+            0.833,
+        )
+        self.assertEqual(evidence_coverage(4, 3), 0.75)
+        self.assertEqual(
+            unsupported_claim_rate({"claims": [
+                {"claim_type": "regulatory_obligation", "status": "unsupported"},
+                {"claim_type": "regulatory_obligation", "status": "verified_source_span"},
+            ]}),
+            0.5,
+        )
+
     def test_index_reset_targets_chroma_collection_only(self):
         from policy_compliance_tracker.retrieval import ingest
 

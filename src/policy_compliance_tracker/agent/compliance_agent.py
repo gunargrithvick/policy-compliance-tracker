@@ -4,6 +4,7 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 
 from langgraph.graph import StateGraph, END
 
@@ -23,6 +24,32 @@ db = None
 retriever = None
 SOURCE_TEXT_CACHE = {}
 SOURCE_TEXT_CACHE_FILE = os.path.join(CHROMA_DB_PATH, "source_text_cache.json")
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+VALIDATION_PROFILE_PATH = PROJECT_ROOT / "data" / "validation" / "validation_profile.json"
+
+CONTROL_FRAMEWORK_REFERENCES = {
+    "C001": ["PR.AC-P6"],
+    "C002": ["PR.AC-P1"],
+    "C003": ["PR.AC-P4"],
+    "C004": ["PR.DS-P1"],
+    "C005": ["PR.PO-P7"],
+    "C006": ["CT.DM-P8"],
+    "C007": ["CT.PO-P1"],
+    "C008": ["CT.PO-P2", "CT.DM-P4", "CT.DM-P5"],
+    "C009": ["ID.IM-P1", "ID.IM-P4", "ID.IM-P6"],
+    "C010": ["PR.PO-P8"],
+    "C011": ["PR.PO-P3"],
+}
+
+
+def load_validation_profile():
+    try:
+        return json.loads(VALIDATION_PROFILE_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {
+            "profile_id": "unconfigured",
+            "profile_status": "unconfigured",
+        }
 
 
 class _ProviderClient:
@@ -786,7 +813,8 @@ def extract_regulatory_obligations(regulation):
     ]
     obligation_pattern = re.compile(
         r"\b(must|shall|required to|is required to|need to|needs to|"
-        r"should|prohibited|may not|no later than|within|immediately)\b",
+        r"should|prohibited|may not|requires?|mandates?|no later than|"
+        r"within|immediately)\b",
         re.IGNORECASE,
     )
     selected = [sentence for sentence in sentences if obligation_pattern.search(sentence)]
@@ -796,15 +824,87 @@ def extract_regulatory_obligations(regulation):
     obligations = []
     for index, sentence in enumerate(selected, start=1):
         deadline = regulation_deadline(sentence)
+        components = extract_obligation_components(sentence)
         obligations.append(
             {
                 "obligation_id": f"OBL-{index:03d}",
                 "text": sentence,
                 "deadline": deadline if deadline != "Not specified in provided regulation." else None,
                 "explicit": bool(obligation_pattern.search(sentence)),
+                "actor": components["actor"],
+                "action": components["action"],
+                "target": components["target"],
+                "condition": components["condition"],
+                "evidence_source": "provided_regulation_text",
+                "source_span": sentence,
+                "validation_status": (
+                    "source_grounded"
+                    if bool(obligation_pattern.search(sentence))
+                    else "needs_review"
+                ),
             }
         )
     return obligations
+
+
+def extract_obligation_components(sentence):
+    """Extract only components explicitly present in one obligation sentence.
+
+    This intentionally returns ``None`` when a component is not explicit. It
+    is safer for a compliance tracker to expose an incomplete obligation than
+    to fill a legal role, condition, or target from an unsupported guess.
+    """
+    text = re.sub(r"\s+", " ", (sentence or "")).strip(" -")
+    modal = re.search(
+        r"\b(must|shall|required to|is required to|need to|needs to|"
+        r"should|may not|prohibited|requires?|mandates?)\b",
+        text,
+        re.IGNORECASE,
+    )
+    if not modal:
+        return {"actor": None, "action": None, "target": None, "condition": None}
+
+    prefix = text[:modal.start()].strip(" ,;:-")
+    actor = None
+    actor_match = re.search(
+        r"(?:^|,\s*)((?:the\s+)?(?:data\s+)?(?:controller|controllers|processor|"
+        r"processors|organization|organizations|entity|entities|bank|banks|"
+        r"regulated\s+entity|regulated\s+entities|operator|operators|provider|"
+        r"providers|responsible\s+party|parties))$",
+        prefix,
+        re.IGNORECASE,
+    )
+    if actor_match:
+        actor = actor_match.group(1).strip()
+    elif prefix and len(prefix.split()) <= 5 and not re.search(
+        r"\b(?:under|article|section|paragraph|pursuant)\b", prefix, re.IGNORECASE
+    ):
+        actor = prefix
+
+    remainder = text[modal.end():].strip(" ,;:-")
+    condition = None
+    condition_match = re.search(
+        r"\b(if|when|unless|where|provided that)\b.*$",
+        remainder,
+        re.IGNORECASE,
+    )
+    if condition_match:
+        condition = condition_match.group(0).strip(" .")
+        remainder = remainder[:condition_match.start()].strip(" ,;:-")
+
+    for pattern in DEADLINE_VALUE_PATTERNS:
+        remainder = pattern.sub("", remainder).strip(" ,;:-")
+
+    action_match = re.match(r"([A-Za-z][A-Za-z-]*)\b(?:\s+(.*))?$", remainder)
+    action = action_match.group(1).lower() if action_match else None
+    target = action_match.group(2).strip(" .") if action_match and action_match.group(2) else None
+
+    return {
+        "actor": actor,
+        "action": action,
+        "target": target or None,
+        "condition": condition,
+    }
 
 
 def excerpt_for_query(text, query, limit=280):
@@ -822,14 +922,41 @@ def excerpt_for_query(text, query, limit=280):
     return compact[start:start + limit].strip()
 
 
-def build_evidence_records(regulation, policies, controls):
+def build_evidence_records(regulation, policies, controls, obligations=None, metadata=None):
     records = []
+    metadata = metadata or {}
+    obligations = obligations or extract_regulatory_obligations(regulation)
+    regulation_source = (
+        metadata.get("source_path")
+        or metadata.get("source_url")
+        or "provided_regulation_text"
+    )
+
+    for obligation in obligations:
+        records.append(
+            {
+                "evidence_id": f"EVD-REG-{obligation['obligation_id']}",
+                "evidence_type": "regulation",
+                "obligation_id": obligation["obligation_id"],
+                "name": "Regulatory source span",
+                "source": regulation_source,
+                "reference": regulation_source,
+                "page": metadata.get("page"),
+                "excerpt": obligation["source_span"],
+                "relevance_score": 20 if obligation.get("explicit") else 0,
+                "supports": ["obligation_extraction"],
+                "verification_status": obligation.get("validation_status"),
+                "verification_method": "exact_source_span",
+            }
+        )
+
     for policy in policies:
         score = policy_relevance_score(regulation, policy)
         if score < 4:
             continue
         records.append(
             {
+                "evidence_id": f"EVD-POL-{len(records) + 1:03d}",
                 "evidence_type": "policy",
                 "name": policy["name"],
                 "source": policy["source"],
@@ -837,7 +964,9 @@ def build_evidence_records(regulation, policies, controls):
                 "page": None,
                 "excerpt": excerpt_for_query(policy["text"], regulation),
                 "relevance_score": score,
-                "supports": "policy_mapping",
+                "supports": ["policy_mapping"],
+                "verification_status": "candidate_alignment",
+                "verification_method": "lexical_and_topic_match",
             }
         )
 
@@ -848,6 +977,7 @@ def build_evidence_records(regulation, policies, controls):
         source = control.get("source", "data/controls\\Core_Control_Matrix.pdf")
         records.append(
             {
+                "evidence_id": f"EVD-CTL-{len(records) + 1:03d}",
                 "evidence_type": "control",
                 "name": f"{control['id']} {control['name']}",
                 "source": source,
@@ -858,30 +988,57 @@ def build_evidence_records(regulation, policies, controls):
                     regulation,
                 ),
                 "relevance_score": score,
-                "supports": "control_mapping",
+                "supports": ["control_mapping"],
+                "framework_references": control.get("framework_references", []),
+                "verification_status": "candidate_alignment",
+                "verification_method": "lexical_and_topic_match",
             }
         )
     return records
 
 
-def build_mapping_graph(obligations, policies, controls, owner):
+def build_mapping_graph(obligations, policies, controls, owner, evidence_records=None):
     edges = []
+    evidence_records = evidence_records or []
+    policy_evidence = {
+        record["name"]: record
+        for record in evidence_records
+        if record.get("evidence_type") == "policy"
+    }
+    control_evidence = {
+        record["name"]: record
+        for record in evidence_records
+        if record.get("evidence_type") == "control"
+    }
     for obligation in obligations:
         obligation_id = obligation["obligation_id"]
         for policy in policies:
+            evidence = policy_evidence.get(policy["name"], {})
             edges.append(
                 {
                     "from": obligation_id,
                     "relation": "mapped_to_policy",
                     "to": policy["name"],
+                    "evidence_id": evidence.get("evidence_id"),
+                    "validation_status": "candidate_alignment",
+                    "provenance": "project_topic_and_lexical_match",
                 }
             )
         for control in controls:
+            control_name = f"{control['id']} {control['name']}"
+            evidence = control_evidence.get(control_name, {})
             edges.append(
                 {
                     "from": obligation_id,
                     "relation": "mapped_to_control",
-                    "to": f"{control['id']} {control['name']}",
+                    "to": control_name,
+                    "evidence_id": evidence.get("evidence_id"),
+                    "framework_references": control.get("framework_references", []),
+                    "framework_alignment_status": control.get(
+                        "framework_alignment_status", "out_of_primary_scope"
+                    ),
+                    "validation_status": "candidate_alignment",
+                    "provenance": "project_topic_and_lexical_match",
                 }
             )
     if owner and obligations:
@@ -890,9 +1047,113 @@ def build_mapping_graph(obligations, policies, controls, owner):
                 "from": obligations[0]["obligation_id"],
                 "relation": "assigned_to",
                 "to": owner,
+                "validation_status": "derived_owner_rule",
             }
         )
     return edges
+
+
+def verify_claim_evidence(obligations, evidence_records, mapping_graph):
+    """Verify claim-level source spans and expose unsupported mappings.
+
+    Regulatory obligation claims are verified only when their extracted span
+    is present in the supplied regulation evidence. Policy/control mappings
+    remain candidate alignments unless an official crosswalk is attached.
+    """
+    claims = []
+    for obligation in obligations:
+        record = next(
+            (
+                evidence for evidence in evidence_records
+                if evidence.get("obligation_id") == obligation.get("obligation_id")
+                and evidence.get("evidence_type") == "regulation"
+            ),
+            None,
+        )
+        source_span = obligation.get("source_span") or ""
+        verified = bool(
+            obligation.get("explicit")
+            and record
+            and source_span
+            and record.get("excerpt") == source_span
+        )
+        claims.append(
+            {
+                "claim_id": obligation.get("obligation_id"),
+                "claim_type": (
+                    "regulatory_obligation"
+                    if obligation.get("explicit")
+                    else "non_obligation_fallback"
+                ),
+                "claim": obligation.get("text"),
+                "evidence_id": record.get("evidence_id") if record else None,
+                "status": (
+                    "verified_source_span"
+                    if verified
+                    else "unsupported"
+                    if obligation.get("explicit")
+                    else "not_applicable"
+                ),
+            }
+        )
+
+    mapping_claims = [
+        edge for edge in mapping_graph
+        if edge.get("relation") in {"mapped_to_policy", "mapped_to_control"}
+    ]
+    explicit_claims = [
+        claim for claim in claims if claim["claim_type"] == "regulatory_obligation"
+    ]
+    unsupported_claims = [
+        claim["claim_id"] for claim in explicit_claims if claim["status"] == "unsupported"
+    ]
+    return {
+        "claims": claims,
+        "mapping_claim_count": len(mapping_claims),
+        "mapping_claims_with_evidence": sum(bool(edge.get("evidence_id")) for edge in mapping_claims),
+        "explicit_claim_count": len(explicit_claims),
+        "non_obligation_fallback_count": sum(
+            claim["claim_type"] == "non_obligation_fallback" for claim in claims
+        ),
+        "verified_claim_count": sum(claim["status"] == "verified_source_span" for claim in explicit_claims),
+        "unsupported_claims": unsupported_claims,
+        "claim_coverage": round(
+            sum(claim["status"] == "verified_source_span" for claim in explicit_claims)
+            / max(len(explicit_claims), 1),
+            3,
+        ),
+        "status": (
+            "needs_review"
+            if unsupported_claims
+            else "not_applicable"
+            if not explicit_claims and claims
+            else "source_grounded"
+        ),
+    }
+
+
+def build_mapping_validation(mapping_graph, evidence_records):
+    profile = load_validation_profile()
+    mapped_edges = [
+        edge for edge in mapping_graph
+        if edge.get("relation") in {"mapped_to_policy", "mapped_to_control"}
+    ]
+    official_edges = [
+        edge for edge in mapped_edges
+        if edge.get("validation_status") == "framework_supported"
+    ]
+    return {
+        "profile_id": profile.get("profile_id", "unconfigured"),
+        "primary_regulation_family": profile.get("primary_regulation_family", {}).get("name", "Unknown"),
+        "primary_control_framework": profile.get("primary_control_framework", {}).get("name", "Unknown"),
+        "framework_supported_edge_count": len(official_edges),
+        "candidate_alignment_edge_count": len(mapped_edges) - len(official_edges),
+        "evidence_backed_edge_count": sum(bool(edge.get("evidence_id")) for edge in mapped_edges),
+        "status": "framework_supported" if mapped_edges and len(official_edges) == len(mapped_edges) else (
+            "candidate_alignment" if mapped_edges else "needs_review"
+        ),
+        "disclaimer": "Candidate alignments are not official legal mappings or compliance certification.",
+    }
 
 
 def policy_change_decision(impacted_policies, required_updates):
@@ -963,12 +1224,31 @@ def build_impact_tracker_record(state):
         state["regulation"],
         state.get("relevant_policies", []),
         state.get("relevant_controls", []),
+        obligations=obligations_structured,
+        metadata=metadata,
     )
+    mapping_graph = build_mapping_graph(
+        obligations_structured,
+        state.get("relevant_policies", []),
+        state.get("relevant_controls", []),
+        owner,
+        evidence_records=evidence_records,
+    )
+    claim_evidence = verify_claim_evidence(
+        obligations_structured,
+        evidence_records,
+        mapping_graph,
+    )
+    mapping_validation = build_mapping_validation(mapping_graph, evidence_records)
+    mapping_evidence_records = [
+        record for record in evidence_records
+        if record.get("evidence_type") in {"policy", "control"}
+    ]
     evidence_quality = round(
         min(
             100.0,
-            sum(min(record["relevance_score"], 20) for record in evidence_records)
-            / max(len(evidence_records), 1)
+            sum(min(record["relevance_score"], 20) for record in mapping_evidence_records)
+            / max(len(mapping_evidence_records), 1)
             * 5,
         ),
         1,
@@ -985,23 +1265,29 @@ def build_impact_tracker_record(state):
         "candidate_controls": len(state.get("control_records", [])),
         "selected_controls": len(state.get("relevant_controls", [])),
         "evidence_count": len(evidence_records),
+        "mapping_evidence_count": len(mapping_evidence_records),
         "evidence_quality": evidence_quality,
+        "claim_evidence_coverage": claim_evidence["claim_coverage"],
+        "mapping_validation_status": mapping_validation["status"],
         "corrective_action": (
             "human_review_required"
-            if not evidence_records or evidence_quality < 35
+            if not mapping_evidence_records or evidence_quality < 35
             else "none"
         ),
     }
     review_required = (
         priority == "Critical"
-        or not evidence_records
+        or not mapping_evidence_records
         or evidence_quality < 35
+        or claim_evidence["status"] == "needs_review"
     )
     review_reason = (
         "Critical impact requires human approval before policy action."
         if priority == "Critical"
+        else "One or more extracted obligations could not be verified against a source span."
+        if claim_evidence["status"] == "needs_review"
         else "Evidence was insufficient for an automatic mapping decision."
-        if not evidence_records or evidence_quality < 35
+        if not mapping_evidence_records or evidence_quality < 35
         else ""
     )
 
@@ -1037,12 +1323,10 @@ def build_impact_tracker_record(state):
         "obligations_structured": obligations_structured,
         "evidence_records": evidence_records,
         "retrieval_diagnostics": retrieval_diagnostics,
-        "mapping_graph": build_mapping_graph(
-            obligations_structured,
-            state.get("relevant_policies", []),
-            state.get("relevant_controls", []),
-            owner,
-        ),
+        "mapping_graph": mapping_graph,
+        "claim_evidence": claim_evidence,
+        "mapping_validation": mapping_validation,
+        "validation_profile": load_validation_profile(),
         "review_required": review_required,
         "review_reason": review_reason,
         "source_path": metadata.get("source_path"),
@@ -1082,6 +1366,8 @@ def format_impact_tracker_record(record):
         ("Analysis Provider", record.get("analysis_provider") or "rule_based"),
         ("Review Required", "Yes" if record.get("review_required") else "No"),
         ("Review Reason", record.get("review_reason") or "None"),
+        ("Mapping Validation", json.dumps(record.get("mapping_validation") or {}, default=str)),
+        ("Claim Evidence", json.dumps(record.get("claim_evidence") or {}, default=str)),
         ("Structured Obligations", json.dumps(record.get("obligations_structured") or [], default=str)),
         ("Evidence Records", json.dumps(record.get("evidence_records") or [], default=str)),
         ("Retrieval Diagnostics", json.dumps(record.get("retrieval_diagnostics") or {}, default=str)),
@@ -1229,7 +1515,7 @@ def read_source_text(source):
             return text
 
         try:
-            from langchain_community.document_loaders import PyPDFLoader
+            from ..ingestion.pdf_loader import PyPDFLoader
 
             pages = PyPDFLoader(normalized_source).load()
             text = "\n\n".join(
@@ -1384,6 +1670,14 @@ def get_control_records():
 
         for record in extract_control_records(text):
             record["source"] = source
+            record["framework_references"] = CONTROL_FRAMEWORK_REFERENCES.get(
+                record["id"], []
+            )
+            record["framework_alignment_status"] = (
+                "curated_alignment_not_official_crosswalk"
+                if record["id"] in CONTROL_FRAMEWORK_REFERENCES
+                else "out_of_primary_scope"
+            )
             records.append(record)
 
     return records
@@ -1426,6 +1720,12 @@ def format_control_records(controls):
             (
                 f"- {control['id']} {control['name']}: "
                 f"{control['description']}"
+                + (
+                    f" [NIST Privacy Framework references: "
+                    f"{', '.join(control.get('framework_references', []))}]"
+                    if control.get("framework_references")
+                    else ""
+                )
             )
             for control in controls
         ]

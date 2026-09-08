@@ -1,0 +1,32 @@
+{
+  "profile_id": "generic-gdpr-nist-pf-v1",
+  "profile_status": "benchmark_and_framework_reference",
+  "primary_regulation_family": {
+    "name": "General Data Protection Regulation (GDPR)",
+    "jurisdiction": "European Union",
+    "local_file": "data/regulations/EU_GDPR_Regulation.pdf",
+    "official_source": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+  },
+  "primary_control_framework": {
+    "name": "NIST Privacy Framework Core",
+    "version": "1.0",
+    "local_file": "data/frameworks/NIST_Privacy_Framework_Core_v1.0.pdf",
+    "official_source": "https://www.nist.gov/privacy-framework",
+    "status": "voluntary_control_vocabulary_not_law"
+  },
+  "supplemental_framework": {
+    "name": "NIST Cybersecurity Framework",
+    "version": "2.0",
+    "official_source": "https://www.nist.gov/cyberframework",
+    "status": "reference_only"
+  },
+  "mapping_policy": {
+    "official_crosswalk": "Use only when an issuer-provided crosswalk is available.",
+    "curated_alignment": "Allowed, but must be labelled candidate and must not be reported as verified legal advice.",
+    "out_of_scope": [
+      "Company-specific policy approval",
+      "Legal advice or certification",
+      "Financial-crime control validation without a suitable public framework"
+    ]
+  }
+}

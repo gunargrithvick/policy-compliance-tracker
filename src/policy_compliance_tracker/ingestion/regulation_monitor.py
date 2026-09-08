@@ -6,6 +6,7 @@ from difflib import SequenceMatcher
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from ..config import REGULATION_DIR
+from .pdf_loader import PyPDFLoader
 from ..storage.tracker_store import (
     fetch_processed_regulations,
     find_file_by_hash,
@@ -60,14 +61,11 @@ def invalid_pdf_message(path: str) -> Optional[str]:
 
 def extract_pdf_text(path: str) -> str:
     try:
-        from langchain_community.document_loaders import PyPDFLoader
+        pages = PyPDFLoader(path).load()
     except ImportError as exc:
         raise MissingDependencyError(
             "PDF processing dependency is missing. Run: python -m pip install -r requirements.txt"
         ) from exc
-
-    loader = PyPDFLoader(path)
-    pages = loader.load()
     return "\n\n".join(page.page_content for page in pages).strip()
 
 
@@ -424,9 +422,9 @@ def process_regulation_file(path: str) -> Dict[str, Any]:
 
 
 def datetime_from_timestamp(timestamp: float) -> str:
-    from datetime import datetime
+    from datetime import datetime, timezone
 
-    return datetime.utcfromtimestamp(timestamp).replace(microsecond=0).isoformat() + "Z"
+    return datetime.fromtimestamp(timestamp, timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def scan_regulation_directory(regulation_dir: str = REGULATION_DIR) -> List[Dict[str, Any]]:

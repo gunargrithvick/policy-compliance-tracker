@@ -84,6 +84,9 @@ def _safe_error(body: str, provider: str) -> str:
 
 
 def _post_json(provider: str, url: str, headers: Dict[str, str], payload: Dict[str, Any]) -> Dict[str, Any]:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme != "https" or not parsed.netloc:
+        raise ProviderError("Cloud provider URL must use HTTPS and include a host.")
     request = urllib.request.Request(
         url,
         data=json.dumps(payload).encode("utf-8"),
@@ -91,7 +94,7 @@ def _post_json(provider: str, url: str, headers: Dict[str, str], payload: Dict[s
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=120) as response:
+        with urllib.request.urlopen(request, timeout=120) as response:  # nosec B310
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")

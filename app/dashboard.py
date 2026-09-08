@@ -1,7 +1,7 @@
 import html
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import streamlit as st
 
@@ -530,7 +530,7 @@ def tracker_display_rows(entries):
                 "Priority": entry.get("priority"),
                 "Owner": entry.get("owner"),
                 "Regulator": entry.get("regulator"),
-                "Policy change": "Yes" if entry.get("policy_change_required") else "No",
+                "Policy Change": "Yes" if entry.get("policy_change_required") else "No",
                 "Policy": entry.get("impacted_policy"),
                 "Updated": display_time(entry.get("updated_at")),
             }
@@ -663,7 +663,7 @@ def percent_value(value):
 def metric_scope_label(row):
     scope = row.get("metric_scope") or "legacy_multi_source"
     if scope == "selected_evidence":
-        return "Selected evidence"
+        return "Selected Evidence"
     if scope == "top_1":
         return "Top 1"
     if scope.startswith("top_"):
@@ -679,7 +679,7 @@ def rag_display_rows(rows):
             "Scope": metric_scope_label(row),
             "Precision": percent_value(row.get("precision")),
             "Recall": percent_value(row.get("recall")),
-            "Source overlap": percent_value(row.get("hit_rate")),
+            "Source Overlap": percent_value(row.get("hit_rate")),
             "Relevance": percent_value(row.get("context_relevance")),
         }
         for row in rows
@@ -768,7 +768,7 @@ def triage_panel_html(entries):
 
     body = (
         '<table class="overview-table"><thead><tr>'
-        "<th>Priority</th><th>Regulatory update</th><th>Policy</th><th>Owner</th>"
+        "<th>Priority</th><th>Regulatory Update</th><th>Policy</th><th>Owner</th>"
         "</tr></thead><tbody>"
         + "".join(rows)
         + "</tbody></table>"
@@ -777,7 +777,7 @@ def triage_panel_html(entries):
     )
     return (
         '<div class="overview-panel">'
-        '<div class="panel-heading"><h2>Triage queue</h2><span>Policy impact and risk</span></div>'
+        '<div class="panel-heading"><h2>Triage Queue</h2><span>Policy impact and risk</span></div>'
         f'<div class="panel-meta">{len(entries)} item(s) prioritized for review</div>'
         f"{body}</div>"
     )
@@ -864,13 +864,29 @@ def run_auto_scan_if_needed():
         return
 
     last_scan = st.session_state.get("last_auto_scan")
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     if last_scan and now - last_scan < timedelta(seconds=60):
         return
 
     with st.spinner("Checking regulation folder for new or changed PDFs..."):
         st.session_state.last_scan_results = scan_regulation_directory(REGULATION_DIR)
         st.session_state.last_auto_scan = now
+
+
+@st.fragment(run_every="60s")
+def auto_monitor_fragment():
+    """Run automatic monitoring on a real timer while this session is open."""
+    if not st.session_state.get("auto_monitor_enabled"):
+        return
+
+    previous_scan = st.session_state.get("last_auto_scan")
+    try:
+        run_auto_scan_if_needed()
+    except Exception as exc:
+        st.error(operation_error_message("Automatic folder scan", exc))
+        return
+    if st.session_state.get("last_auto_scan") != previous_scan:
+        st.rerun()
 
 
 init_db()
@@ -890,8 +906,6 @@ if "last_feed_results" not in st.session_state:
     st.session_state.last_feed_results = []
 if "auto_monitor_enabled" not in st.session_state:
     st.session_state.auto_monitor_enabled = False
-
-run_auto_scan_if_needed()
 
 summary = tracker_summary_counts()
 all_entries = fetch_tracker_entries()
@@ -946,7 +960,7 @@ with st.sidebar:
           <h2>Compliance Control Room</h2>
           <p>Regulatory intelligence, policy impact, and remediation workflow in one place.</p>
         </div>
-        <div class="side-status"><strong>Local data loaded</strong><span>Counts and tables come from the local tracker database.</span></div>
+          <div class="side-status"><strong>Local Data Loaded</strong><span>Counts and tables come from the local tracker database.</span></div>
         """,
         unsafe_allow_html=True,
     )
@@ -954,9 +968,9 @@ with st.sidebar:
     st.session_state.auto_monitor_enabled = st.toggle(
         "Auto-Check Local PDFs",
         value=st.session_state.auto_monitor_enabled,
-        help="Checks for new or modified PDFs about once per minute while the dashboard is open.",
+        help="Checks for new or modified PDFs every 60 seconds while the dashboard is open.",
     )
-    st.caption("Use the Automation tab to run folder scans, feed checks, and review stored processing history.")
+    st.caption("Automatic checks run every 60 seconds. Use the Automation tab for manual scans, feed checks, and processing history.")
 
     st.divider()
     st.header("Notifications")
@@ -981,6 +995,9 @@ with st.sidebar:
                 st.rerun()
     else:
         st.caption("No unread notifications.")
+
+
+auto_monitor_fragment()
 
 
 tab_analyze, tab_tracker, tab_alerts, tab_automation, tab_audit, tab_rag = st.tabs(
@@ -1091,7 +1108,7 @@ with tab_tracker:
             detail_cols = st.columns(3)
             detail_cols[0].markdown(
                 detail_metric_html(
-                    "Policy change",
+                    "Policy Change",
                     "Required" if detail_entry.get("policy_change_required") else "Not required",
                 ),
                 unsafe_allow_html=True,
@@ -1117,7 +1134,7 @@ with tab_tracker:
             st.write(detail_entry.get("policy_change_reason") or "No policy change reason recorded.")
             st.write(detail_entry.get("required_policy_update") or "No required policy update recorded.")
 
-            st.markdown("##### Control And Evidence")
+            st.markdown("##### Control and Evidence")
             st.write(detail_entry.get("impacted_control") or "No impacted control recorded.")
             st.write(detail_entry.get("control_gap") or "No control gap recorded.")
             st.write(detail_entry.get("evidence") or "No evidence recorded.")
@@ -1129,10 +1146,13 @@ with tab_tracker:
                 st.write(detail_entry["review_reason"])
 
             structured_fields = [
-                ("Structured obligations", "obligations_structured"),
-                ("Evidence records", "evidence_records"),
-                ("Retrieval diagnostics", "retrieval_diagnostics"),
-                ("Regulation-policy-control relationships", "mapping_graph"),
+                ("Structured Obligations", "obligations_structured"),
+                ("Evidence Records", "evidence_records"),
+                ("Retrieval Diagnostics", "retrieval_diagnostics"),
+                ("Regulation, Policy, and Control Relationships", "mapping_graph"),
+                ("Claim-Level Evidence Verification", "claim_evidence"),
+                ("Mapping Validation", "mapping_validation"),
+                ("Validation Profile", "validation_profile"),
             ]
             for label, field in structured_fields:
                 raw_value = detail_entry.get(field)
@@ -1150,7 +1170,7 @@ with tab_alerts:
     st.markdown(
         view_intro_html(
             "Attention Queue",
-            "Alerts And Notifications",
+            "Alerts and Notifications",
             "Review high-impact tracker notifications and clear unread alerts after they have been handled.",
             f"{summary['unread_notifications']} unread",
             "red" if summary["unread_notifications"] else "",
@@ -1164,7 +1184,7 @@ with tab_alerts:
         unsafe_allow_html=True,
     )
     alert_metric_cols[1].markdown(
-        detail_metric_html("Total Alerts", str(len(all_notifications))),
+        detail_metric_html("Recent Alerts", str(len(all_notifications))),
         unsafe_allow_html=True,
     )
     alert_metric_cols[2].markdown(
@@ -1178,7 +1198,7 @@ with tab_alerts:
             unsafe_allow_html=True,
         )
         if notifications:
-            if st.button("Mark All Unread Alerts As Read", type="primary", width="stretch"):
+            if st.button("Mark All Unread Alerts as Read", type="primary", width="stretch"):
                 mark_all_notifications_read()
                 st.rerun()
 
@@ -1218,7 +1238,7 @@ with tab_analyze:
     st.markdown(
         view_intro_html(
             "Agent Workspace",
-            "Analyze A Regulatory Update",
+            "Analyze a Regulatory Update",
             "Map obligations to internal policy and control actions, then create a persistent tracker item.",
             "Agent-assisted mapping",
         ),
@@ -1246,8 +1266,8 @@ with tab_analyze:
             )
             st.caption(provider_configuration_message(selected_provider))
             if selected_provider == "gemini":
-                st.caption(
-                    f"Model: {provider_model(selected_provider)}. Regulatory text will be sent to Google Gemini when you run analysis."
+                st.warning(
+                    f"Model: {provider_model(selected_provider)}. Regulatory and policy/control text will be sent to Google Gemini. Do not use this mode for sensitive data unless your data-handling policy permits it."
                 )
             elif selected_provider == "ollama":
                 st.caption(f"Model: {provider_model(selected_provider)}. Analysis stays local to Ollama.")
@@ -1308,7 +1328,7 @@ with tab_analyze:
         if selected_provider == "gemini" and not provider_is_configured(selected_provider):
             st.warning("Google Gemini is selected but GEMINI_API_KEY is not configured. Add it to .env before running analysis.")
         if st.button(
-            "Analyze And Create Tracker Item",
+            "Analyze and Create Tracker Item",
             type="primary",
             width="stretch",
             disabled=not regulation_text or not provider_is_configured(selected_provider),
@@ -1407,9 +1427,9 @@ with tab_analyze:
                 )
 
             result_block("Summary", result.get("summary"))
-            result_block("Policy mapping", result.get("mapping"))
-            result_block("Control matrix", result.get("control_matrix"))
-            result_block("Impact tracker", result.get("impact_tracker"))
+            result_block("Policy Mapping", result.get("mapping"))
+            result_block("Control Matrix", result.get("control_matrix"))
+            result_block("Impact Tracker", result.get("impact_tracker"))
         with detail:
             st.json(public_tracker_record(record))
 
@@ -1542,6 +1562,7 @@ with tab_rag:
                         st.error(operation_error_message("Retrieval evaluation", exc))
                     else:
                         st.session_state.latest_rag_results = results
+                        st.rerun()
         with note_col:
             st.markdown('<div class="action-note">The evaluation searches the full policy and control library, selects only strong evidence sources, and scores source overlap so partial or extra-source matches do not appear as perfect hits.</div>', unsafe_allow_html=True)
 

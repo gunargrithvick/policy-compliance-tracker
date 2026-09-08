@@ -4,7 +4,7 @@ import io
 import json
 import textwrap
 import zipfile
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List
 
 
@@ -37,6 +37,9 @@ TRACKER_EXPORT_COLUMNS = [
     "evidence_records",
     "retrieval_diagnostics",
     "mapping_graph",
+    "claim_evidence",
+    "mapping_validation",
+    "validation_profile",
     "evidence",
     "created_at",
     "updated_at",
@@ -46,6 +49,10 @@ TRACKER_EXPORT_COLUMNS = [
     "downloaded_at",
     "regulator_source",
 ]
+
+
+def utc_timestamp() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def _safe(value: Any) -> str:
@@ -87,7 +94,7 @@ def analysis_to_text(result: Dict[str, Any]) -> str:
     return (
         "POLICY COMPLIANCE REPORT\n"
         + "=" * 60
-        + f"\nGenerated: {datetime.utcnow().isoformat()}Z\n\n"
+        + f"\nGenerated: {utc_timestamp()}\n\n"
         + f"--- SUMMARY ---\n{result.get('summary', '')}\n\n"
         + f"--- POLICY MAPPING ---\n{result.get('mapping', '')}\n\n"
         + f"--- CONTROL MATRIX MAPPING ---\n{result.get('control_matrix', '')}\n\n"
@@ -98,7 +105,7 @@ def analysis_to_text(result: Dict[str, Any]) -> str:
 def analysis_to_markdown(result: Dict[str, Any]) -> str:
     return (
         "# Policy Compliance Report\n\n"
-        f"**Generated:** {datetime.utcnow().isoformat()}Z\n\n"
+        f"**Generated:** {utc_timestamp()}\n\n"
         f"## Summary\n{result.get('summary', '')}\n\n"
         f"## Policy Mapping\n{result.get('mapping', '')}\n\n"
         f"## Control Matrix Mapping\n{result.get('control_matrix', '')}\n\n"
@@ -140,7 +147,7 @@ def _worksheet_xml(rows: List[List[Any]]) -> str:
 
 
 def rows_to_xlsx(rows: List[List[Any]]) -> bytes:
-    created = datetime.utcnow().isoformat() + "Z"
+    created = utc_timestamp()
     content_types = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'

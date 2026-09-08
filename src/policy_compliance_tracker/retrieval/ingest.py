@@ -1,6 +1,5 @@
 import os
 
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -8,6 +7,7 @@ from langchain_chroma import Chroma
 
 from ..config import CHROMA_DB_PATH
 from ..ingestion.regulation_monitor import invalid_pdf_message
+from ..ingestion.pdf_loader import PyPDFLoader
 
 COLLECTION_NAME = "langchain"
 
@@ -19,7 +19,8 @@ def load_documents():
     folders = [
         "data/regulations",
         "data/policies",
-        "data/controls"
+        "data/controls",
+        "data/frameworks",
     ]
 
     for folder in folders:
@@ -50,6 +51,8 @@ def load_documents():
                     doc_type = "regulation"
                 elif "policies" in folder:
                     doc_type = "policy"
+                elif "frameworks" in folder:
+                    doc_type = "framework"
                 else:
                     doc_type = "control"
 

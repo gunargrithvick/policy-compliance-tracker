@@ -1,6 +1,8 @@
 import hashlib
+import json
 import os
 import re
+import time
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
@@ -20,28 +22,36 @@ DEFAULT_FEEDS = [
         "name": "RBI Updates",
         "regulator": "RBI",
         "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx",
+        "fallback_urls": ["https://www.rbi.org.in/"],
     },
     {
         "name": "SEBI Circulars",
         "regulator": "SEBI",
         "url": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=1&ssid=7&smid=0",
+        "fallback_urls": ["https://www.sebi.gov.in/"],
     },
     {
         "name": "CERT-In Advisories",
         "regulator": "CERT-In",
         "url": "https://www.cert-in.org.in/",
+        "fallback_urls": [],
     },
     {
         "name": "PCI DSS Updates",
         "regulator": "PCI DSS",
         "url": "https://www.pcisecuritystandards.org/document_library/",
+        "fallback_urls": ["https://www.pcisecuritystandards.org/"],
     },
     {
         "name": "ISO Updates",
         "regulator": "ISO",
         "url": "https://www.iso.org/news.html",
+        "fallback_urls": ["https://www.iso.org/"],
     },
 ]
+
+DEFAULT_FETCH_RETRIES = 3
+RETRY_DELAY_SECONDS = 0.5
 
 
 class LinkParser(HTMLParser):
@@ -58,13 +68,75 @@ class LinkParser(HTMLParser):
             self.links.append(href)
 
 
-def fetch_url(url: str, timeout: int = 20) -> bytes:
-    request = urllib.request.Request(
-        url,
-        headers={"User-Agent": "ComplianceAgent/1.0"},
-    )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.read()
+def fetch_url(
+    url: str,
+    timeout: int = 20,
+    retries: int = DEFAULT_FETCH_RETRIES,
+) -> bytes:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme != "https" or not parsed.netloc:
+        raise ValueError("Regulatory feed URLs must use HTTPS and include a host.")
+
+    last_error: Optional[Exception] = None
+    for attempt in range(max(1, retries)):
+        request = urllib.request.Request(
+            url,
+            headers={"User-Agent": "ComplianceAgent/1.0"},
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:  # nosec B310
+                return response.read()
+        except Exception as exc:  # network providers expose several exception types
+            last_error = exc
+            if attempt + 1 < max(1, retries):
+                time.sleep(RETRY_DELAY_SECONDS * (2**attempt))
+
+    raise RuntimeError(f"Unable to fetch regulatory source after {retries} attempts: {url}") from last_error
+
+
+def _feed_cache_path(destination_dir: str, feed_name: str) -> str:
+    cache_key = hashlib.sha256(feed_name.encode("utf-8")).hexdigest()[:16]
+    return os.path.join(destination_dir, ".feed_cache", f"{cache_key}.html")
+
+
+def _feed_cache_metadata_path(destination_dir: str, feed_name: str) -> str:
+    cache_key = hashlib.sha256(feed_name.encode("utf-8")).hexdigest()[:16]
+    return os.path.join(destination_dir, ".feed_cache", f"{cache_key}.json")
+
+
+def fetch_feed_page(feed: Dict[str, Any], destination_dir: str) -> tuple[bytes, str, bool]:
+    """Fetch a feed page, trying configured official fallbacks and then cache."""
+    urls = [feed["url"], *feed.get("fallback_urls", [])]
+    errors: List[str] = []
+    for url in dict.fromkeys(urls):
+        try:
+            page = fetch_url(url)
+            cache_path = _feed_cache_path(destination_dir, feed["name"])
+            metadata_path = _feed_cache_metadata_path(destination_dir, feed["name"])
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            with open(cache_path, "wb") as cache_file:
+                cache_file.write(page)
+            with open(metadata_path, "w", encoding="utf-8") as metadata_file:
+                json.dump({"source_url": url}, metadata_file)
+            return page, url, False
+        except Exception as exc:
+            errors.append(f"{url}: {exc}")
+
+    cache_path = _feed_cache_path(destination_dir, feed["name"])
+    if os.path.exists(cache_path):
+        cached_source_url = feed["url"]
+        metadata_path = _feed_cache_metadata_path(destination_dir, feed["name"])
+        if os.path.exists(metadata_path):
+            try:
+                with open(metadata_path, encoding="utf-8") as metadata_file:
+                    cached_source_url = json.load(metadata_file).get("source_url", cached_source_url)
+            except (OSError, json.JSONDecodeError, AttributeError):
+                cached_source_url = feed["url"]
+        with open(cache_path, "rb") as cache_file:
+            return cache_file.read(), cached_source_url, True
+
+    detail = "; ".join(errors)
+    raise RuntimeError(f"No live or cached regulatory source was available for {feed['name']}. {detail}")
 
 
 def discover_pdf_links(page_url: str, html_bytes: bytes) -> List[str]:
@@ -158,12 +230,17 @@ def ingest_feeds(
         try:
             if url.lower().endswith(".pdf"):
                 pdf_links = [url]
+                feed_source_url = url
+                cache_used = False
             else:
-                page = fetch_url(url)
-                pdf_links = discover_pdf_links(url, page)[:limit_per_feed]
+                page, feed_source_url, cache_used = fetch_feed_page(feed, destination_dir)
+                pdf_links = discover_pdf_links(feed_source_url, page)[:limit_per_feed]
 
             if not pdf_links:
-                results.append({"feed": name, "status": "no_pdf_found", "message": "No PDF links discovered"})
+                message = "No PDF links discovered"
+                if cache_used:
+                    message += "; using cached feed page"
+                results.append({"feed": name, "status": "no_pdf_found", "message": message})
                 continue
 
             for pdf_url in pdf_links:
@@ -177,6 +254,8 @@ def ingest_feeds(
                         "file": destination,
                         "source_url": pdf_url,
                     }
+                    if cache_used:
+                        result["message"] = "Live feed unavailable; used cached feed page"
                     if analyze_downloads and file_record.get("status") != "processed":
                         analysis_result = analyze_feed_file(destination)
                         result.update(
@@ -220,6 +299,8 @@ def ingest_feeds(
                     "file": destination,
                     "source_url": pdf_url,
                 }
+                if cache_used:
+                    result["message"] = "Live feed unavailable; used cached feed page"
                 if analyze_downloads:
                     analysis_result = analyze_feed_file(destination)
                     result.update(
