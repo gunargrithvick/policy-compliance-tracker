@@ -1601,7 +1601,8 @@ def read_source_text(source):
                 page.page_content
                 for page in pages
             ).strip()
-        except Exception:
+        except Exception as exc:
+            print(f"Reference source extraction failed: {normalized_source} ({exc})")
             text = ""
 
         if text:
@@ -1610,6 +1611,8 @@ def read_source_text(source):
                 "text": text,
             }
             save_source_text_cache(disk_cache)
+    else:
+        print(f"Reference source not found: {normalized_source}")
 
     SOURCE_TEXT_CACHE[cache_key] = text
 
