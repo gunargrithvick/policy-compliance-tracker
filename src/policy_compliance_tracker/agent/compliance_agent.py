@@ -415,6 +415,22 @@ CONTROL_TOPIC_TERMS = {
     "C013": {"transaction monitoring", "financial crime monitoring", "unusual transaction", "unusual activity", "unusual patterns", "suspicious patterns", "monitor transactions", "transaction patterns", "monitoring alert"},
 }
 
+FALLBACK_CONTROL_CATALOG = (
+    ("C001", "Multi-Factor Authentication", "Require MFA for privileged and critical accounts.", 0),
+    ("C002", "Password Complexity", "Enforce strong password requirements.", 0),
+    ("C003", "Access Review", "Conduct quarterly access reviews.", 0),
+    ("C004", "Data Encryption", "Encrypt sensitive information at rest and in transit.", 0),
+    ("C005", "Incident Response", "Establish and maintain incident response procedures.", 0),
+    ("C006", "Audit Logging", "Maintain logs for security monitoring and investigations.", 0),
+    ("C007", "User Consent Management", "Record and manage user consent for personal data processing.", 0),
+    ("C008", "Data Retention Management", "Enforce data retention and deletion schedules.", 0),
+    ("C009", "Data Classification", "Classify information assets by sensitivity and business impact before sharing, storage, or processing.", 1),
+    ("C010", "Continuity Testing", "Test continuity and disaster recovery procedures at planned intervals and record unresolved gaps.", 1),
+    ("C011", "Backup Restoration", "Perform and retain evidence of restoration tests for critical service backups.", 1),
+    ("C012", "Sanctions Screening", "Screen relevant customers, counterparties, and transactions against applicable sanctions lists.", 1),
+    ("C013", "Transaction Monitoring", "Monitor transactions using risk-based rules and investigate unusual activity indicators.", 1),
+)
+
 TRACKER_SECTION_LABELS = {
     "Summary",
     "Compliance Obligations",
@@ -1762,6 +1778,29 @@ def get_control_records():
             )
             records.append(record)
 
+    if records:
+        return records
+
+    # Streamlit Cloud can temporarily fail to extract a bundled PDF. Keep the
+    # demo usable with the project-authored catalog while marking the records
+    # so the result remains a candidate mapping, not source certification.
+    for control_id, name, description, source_index in FALLBACK_CONTROL_CATALOG:
+        records.append(
+            {
+                "id": control_id,
+                "name": name,
+                "description": description,
+                "source": CONTROL_SOURCES[source_index],
+                "fallback_catalog": True,
+                "framework_references": CONTROL_FRAMEWORK_REFERENCES.get(control_id, []),
+                "framework_alignment_status": (
+                    "curated_alignment_not_official_crosswalk"
+                    if control_id in CONTROL_FRAMEWORK_REFERENCES
+                    else "out_of_primary_scope"
+                ),
+            }
+        )
+
     return records
 
 
@@ -1821,14 +1860,19 @@ def get_policy_records():
     for source in POLICY_SOURCES:
         text = get_source_text([source])
 
-        if not text:
-            continue
+        fallback_catalog = not text
+        if fallback_catalog:
+            text = (
+                f"Project-authored topic index for {display_source_name(source)}: "
+                f"{', '.join(sorted(POLICY_TOPIC_TERMS.get(display_source_name(source), set())))}"
+            )
 
         records.append(
             {
                 "source": source,
                 "name": display_source_name(source),
                 "text": text,
+                "fallback_catalog": fallback_catalog,
             }
         )
 
