@@ -9,7 +9,12 @@ from pathlib import Path
 from langgraph.graph import StateGraph, END
 
 from ..config import CHROMA_DB_PATH, TOP_K
-from ..providers.analysis_providers import PROVIDER_LABELS, ProviderError, invoke_provider
+from ..providers.analysis_providers import (
+    PROVIDER_LABELS,
+    ProviderError,
+    invoke_provider,
+    is_remote_ollama,
+)
 
 
 USE_LLM_ANALYSIS = os.getenv("USE_LLM_ANALYSIS", "").lower() in {
@@ -88,7 +93,7 @@ def get_llm(provider="ollama"):
         raise ProviderError("Rule-based analysis does not use a language model.")
 
     if provider not in llm_clients:
-        if provider == "ollama":
+        if provider == "ollama" and not is_remote_ollama():
             from langchain_ollama import ChatOllama
 
             llm_clients[provider] = ChatOllama(

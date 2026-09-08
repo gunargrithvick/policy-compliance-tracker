@@ -68,7 +68,7 @@ flowchart LR
 | Retrieval | Chroma, Hugging Face embeddings, and sentence-transformers |
 | Document Processing | pypdf |
 | Local Storage | SQLite |
-| Analysis Engines | Deterministic rules, Ollama `qwen2.5:1.5b`, or Google Gemini API |
+  | Analysis Engines | Deterministic rules, local/remote Ollama, or Google Gemini API |
 | Exports | CSV, Excel, PDF, JSON, Markdown, and text |
 | Testing | Python `unittest`, pytest, Ruff, and Bandit |
 
@@ -309,7 +309,19 @@ ollama pull qwen2.5:1.5b
 python -m streamlit run app/dashboard.py
 ```
 
-In the dashboard's Analyze tab, select `Ollama Local LLM` as the Analysis Engine.
+In the dashboard's Analyze tab, select `Ollama Local/Cloud API` as the Analysis Engine.
+
+## Optional Ollama Cloud API Mode
+
+Streamlit Community Cloud cannot reach Ollama running on your PC. The app can instead call Ollama's hosted API when you configure:
+
+```env
+OLLAMA_BASE_URL=https://ollama.com/api
+OLLAMA_API_KEY=your_ollama_api_key_here
+OLLAMA_MODEL=gpt-oss:20b
+```
+
+Add these values to Streamlit Community Cloud Secrets or your local `.env`, then select `Ollama Local/Cloud API`. Keep the API key private and use a model available to your Ollama account. If `OLLAMA_BASE_URL` is omitted, the app uses the local server at `http://localhost:11434/api`.
 
 ## Final Evaluation Artifacts
 

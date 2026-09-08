@@ -1270,7 +1270,10 @@ with tab_analyze:
                     f"Model: {provider_model(selected_provider)}. Regulatory and policy/control text will be sent to Google Gemini. Do not use this mode for sensitive data unless your data-handling policy permits it."
                 )
             elif selected_provider == "ollama":
-                st.caption(f"Model: {provider_model(selected_provider)}. Analysis stays local to Ollama.")
+                st.caption(
+                    f"Model: {provider_model(selected_provider)}. "
+                    "Uses local Ollama by default, or the configured Ollama Cloud API."
+                )
 
         sample_col, sample_action_col = st.columns([3, 1], gap="medium")
         with sample_col:
@@ -1327,6 +1330,8 @@ with tab_analyze:
         )
         if selected_provider == "gemini" and not provider_is_configured(selected_provider):
             st.warning("Google Gemini is selected but GEMINI_API_KEY is not configured. Add it to .env or Streamlit secrets before running analysis.")
+        if selected_provider == "ollama" and not provider_is_configured(selected_provider):
+            st.warning("Remote Ollama is selected but OLLAMA_API_KEY is not configured. Add OLLAMA_BASE_URL and OLLAMA_API_KEY to .env or Streamlit secrets before running analysis.")
         if st.button(
             "Analyze and Create Tracker Item",
             type="primary",

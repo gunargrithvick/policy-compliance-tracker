@@ -41,6 +41,41 @@ class ProviderAndUploadTests(unittest.TestCase):
             with self.assertRaises(ProviderError):
                 invoke_provider("gemini", "test prompt")
 
+    def test_remote_ollama_adapter_uses_cloud_endpoint_and_key(self):
+        from policy_compliance_tracker.providers.analysis_providers import invoke_provider
+
+        with patch.dict(
+            os.environ,
+            {
+                "OLLAMA_BASE_URL": "https://ollama.com/api",
+                "OLLAMA_API_KEY": "test-ollama-key",
+                "OLLAMA_MODEL": "test-model",
+            },
+            clear=False,
+        ):
+            with patch(
+                "policy_compliance_tracker.providers.analysis_providers._post_json",
+                return_value={"message": {"content": "cloud response"}},
+            ) as request_mock:
+                response = invoke_provider("ollama", "test prompt")
+
+        self.assertEqual(response.content, "cloud response")
+        self.assertEqual(response.model, "test-model")
+        self.assertEqual(request_mock.call_args.args[0], "ollama")
+        self.assertTrue(request_mock.call_args.args[1].endswith("/chat"))
+        self.assertEqual(request_mock.call_args.args[3]["stream"], False)
+
+    def test_remote_ollama_adapter_requires_key(self):
+        from policy_compliance_tracker.providers.analysis_providers import ProviderError, invoke_provider
+
+        with patch.dict(
+            os.environ,
+            {"OLLAMA_BASE_URL": "https://ollama.com/api", "OLLAMA_API_KEY": ""},
+            clear=False,
+        ):
+            with self.assertRaises(ProviderError):
+                invoke_provider("ollama", "test prompt")
+
 
 if __name__ == "__main__":
     unittest.main()

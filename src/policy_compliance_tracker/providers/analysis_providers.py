@@ -25,7 +25,7 @@ load_dotenv()
 
 PROVIDER_LABELS = {
     "rule_based": "Rule-Based Analysis",
-    "ollama": "Ollama Local LLM",
+    "ollama": "Ollama Local/Cloud API",
     "gemini": "Google Gemini API",
 }
 
@@ -34,7 +34,10 @@ DEFAULT_MODELS = {
     "gemini": "gemini-3.6-flash",
 }
 
+DEFAULT_OLLAMA_BASE_URL = "http://localhost:11434/api"
+
 API_KEY_ENV_VARS = {
+    "ollama": "OLLAMA_API_KEY",
     "gemini": "GEMINI_API_KEY",
 }
 
@@ -71,15 +74,27 @@ def provider_model(provider: str) -> str:
     return configured_value(env_name) or DEFAULT_MODELS.get(provider, "")
 
 
+def ollama_base_url() -> str:
+    return configured_value("OLLAMA_BASE_URL") or DEFAULT_OLLAMA_BASE_URL
+
+
+def is_remote_ollama() -> bool:
+    return not ollama_base_url().lower().startswith("http://localhost")
+
+
 def provider_is_configured(provider: str) -> bool:
-    if provider in {"rule_based", "ollama"}:
+    if provider == "rule_based":
+        return True
+    if provider == "ollama" and not is_remote_ollama():
         return True
     return bool(configured_value(API_KEY_ENV_VARS.get(provider, "")))
 
 
 def provider_configuration_message(provider: str) -> str:
-    if provider in {"rule_based", "ollama"}:
+    if provider == "rule_based":
         return f"{provider_label(provider)} is selected."
+    if provider == "ollama" and not is_remote_ollama():
+        return f"{provider_label(provider)} is configured for the local Ollama server."
     key_name = API_KEY_ENV_VARS.get(provider)
     if provider_is_configured(provider):
         return f"{provider_label(provider)} is configured with model {provider_model(provider)}."
@@ -95,9 +110,16 @@ def _safe_error(body: str, provider: str) -> str:
     return message or "The provider returned an empty error response."
 
 
-def _post_json(provider: str, url: str, headers: Dict[str, str], payload: Dict[str, Any]) -> Dict[str, Any]:
+def _post_json(
+    provider: str,
+    url: str,
+    headers: Dict[str, str],
+    payload: Dict[str, Any],
+    allow_local_http: bool = False,
+) -> Dict[str, Any]:
     parsed = urllib.parse.urlparse(url)
-    if parsed.scheme != "https" or not parsed.netloc:
+    local_http = parsed.scheme == "http" and parsed.hostname in {"localhost", "127.0.0.1"}
+    if not parsed.netloc or (parsed.scheme != "https" and not (allow_local_http and local_http)):
         raise ProviderError("Cloud provider URL must use HTTPS and include a host.")
     request = urllib.request.Request(
         url,
@@ -139,6 +161,10 @@ def _require_api_key(provider: str) -> str:
     return value
 
 
+def _ollama_text(data: Dict[str, Any]) -> str:
+    return str(data.get("message", {}).get("content", "") or data.get("response", "")).strip()
+
+
 def invoke_provider(provider: str, prompt: str) -> ProviderResponse:
     provider = (provider or "rule_based").strip().lower()
     if provider == "rule_based":
@@ -149,18 +175,26 @@ def invoke_provider(provider: str, prompt: str) -> ProviderResponse:
         raise ProviderError(f"No model is configured for {provider_label(provider)}.")
 
     if provider == "ollama":
-        try:
-            from langchain_ollama import ChatOllama
+        base_url = ollama_base_url().rstrip("/")
+        api_key = configured_value("OLLAMA_API_KEY")
+        if is_remote_ollama() and not api_key:
+            raise ProviderError("OLLAMA_API_KEY is required for a remote Ollama API.")
+        headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
+        data = _post_json(
+            provider,
+            f"{base_url}/chat",
+            headers,
+            {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": False,
+                "options": {"temperature": 0},
+            },
+            allow_local_http=True,
+        )
+        content = _ollama_text(data)
 
-            response = ChatOllama(model=model, temperature=0).invoke(prompt)
-        except Exception as exc:
-            raise ProviderError(
-                f"Ollama could not complete the request: {str(exc)[:400]}"
-            ) from exc
-        content = getattr(response, "content", "")
-        return ProviderResponse(str(content).strip(), provider, model)
-
-    if provider == "gemini":
+    elif provider == "gemini":
         api_key = _require_api_key(provider)
         url = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
