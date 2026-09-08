@@ -1,4 +1,5 @@
 # Tested with Python 3.11 on Windows.
+-e .
 streamlit==1.58.0
 python-dotenv==1.2.2
 
