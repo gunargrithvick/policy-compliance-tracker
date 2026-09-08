@@ -143,26 +143,26 @@ def get_retriever():
     return retriever
 
 POLICY_SOURCES = [
-    "data/policies\\Data_Privacy_Policy.pdf",
-    "data/policies\\Information_Security_Policy.pdf",
-    "data/policies\\Business_Continuity_Policy.pdf",
-    "data/policies\\Data_Governance_Policy.pdf",
-    "data/policies\\Financial_Crime_Policy.pdf",
+    os.path.join("data", "policies", "Data_Privacy_Policy.pdf"),
+    os.path.join("data", "policies", "Information_Security_Policy.pdf"),
+    os.path.join("data", "policies", "Business_Continuity_Policy.pdf"),
+    os.path.join("data", "policies", "Data_Governance_Policy.pdf"),
+    os.path.join("data", "policies", "Financial_Crime_Policy.pdf"),
 ]
 
 CONTROL_SOURCES = [
-    "data/controls\\Core_Control_Matrix.pdf",
-    "data/controls\\Supplemental_Control_Matrix.pdf",
+    os.path.join("data", "controls", "Core_Control_Matrix.pdf"),
+    os.path.join("data", "controls", "Supplemental_Control_Matrix.pdf"),
 ]
 
 SOURCE_DISPLAY_NAMES = {
-    "data/policies\\Data_Privacy_Policy.pdf": "Data Privacy Policy",
-    "data/policies\\Information_Security_Policy.pdf": "Information Security Policy",
-    "data/policies\\Business_Continuity_Policy.pdf": "Business Continuity Policy",
-    "data/policies\\Data_Governance_Policy.pdf": "Data Governance Policy",
-    "data/policies\\Financial_Crime_Policy.pdf": "Financial Crime Policy",
-    "data/controls\\Core_Control_Matrix.pdf": "Core Control Matrix",
-    "data/controls\\Supplemental_Control_Matrix.pdf": "Supplemental Control Matrix",
+    POLICY_SOURCES[0]: "Data Privacy Policy",
+    POLICY_SOURCES[1]: "Information Security Policy",
+    POLICY_SOURCES[2]: "Business Continuity Policy",
+    POLICY_SOURCES[3]: "Data Governance Policy",
+    POLICY_SOURCES[4]: "Financial Crime Policy",
+    CONTROL_SOURCES[0]: "Core Control Matrix",
+    CONTROL_SOURCES[1]: "Supplemental Control Matrix",
 }
 
 DEADLINE_PATTERN = re.compile(
