@@ -210,7 +210,7 @@ Run the retrieval evaluation after building the retrieval index:
 python research/run_experiments.py
 ```
 
-The experiment compares hybrid RAG, direct semantic top-k, and a keyword baseline. It writes per-case JSON/CSV results to `research/results/` and reports cold-start and warm-run latency.
+The experiment compares hybrid RAG, direct semantic top-k, and a keyword baseline. It writes per-case JSON/CSV results to `research/results/` and reports cold-start and warm-run latency. The direct semantic top-k comparison is separate from the controlled component ablation; the paper tables use the controlled `semantic_only` baseline from `research/run_ablation.py`.
 
 Run the controlled retrieval-component ablation:
 

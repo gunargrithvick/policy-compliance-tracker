@@ -101,7 +101,8 @@ The evaluation has four complementary parts:
 | Hybrid retrieval recall | 0.991 |
 | Hybrid retrieval mean F1 | 0.985 |
 | Hybrid retrieval mean MRR | 0.875 |
-| Semantic top-k mean F1 | 0.639 |
+| Direct semantic top-k mean F1 (separate comparison) | 0.115 |
+| Controlled semantic-only mean F1 (ablation) | 0.605 |
 | Keyword baseline mean F1 | 0.318 |
 | End-to-end successful cases | 200/200 |
 | End-to-end mean mapping accuracy | 0.951 |
@@ -117,6 +118,15 @@ The evaluation has four complementary parts:
 | Candidate control-alignment rate | 0.725 |
 | Full-pipeline human-review gate rate | 0.544 |
 | Complete automated test suite | 52 passed |
+
+Two semantic baselines are reported because they use different evaluation
+paths. The direct `semantic_top_k` value comes from `research/run_experiments.py`,
+where direct vector-store top-k retrieval is compared with the hybrid and
+keyword methods. The `semantic_only` value comes from the controlled cumulative
+ablation in `research/run_ablation.py` and is the baseline used in the paper's
+controlled retrieval tables. These values must not be substituted for each
+other. An earlier run used a different semantic baseline snapshot and is not
+part of the current paper-ready results.
 
 The low ClaimRAG retrieval evidence-hit rate must be reported honestly. It
 shows that the current local GDPR retrieval configuration does not reliably

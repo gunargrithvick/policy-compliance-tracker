@@ -42,6 +42,12 @@ The project retrieves candidate passages from Chroma using the `all-MiniLM-L6-v2
 
 This comparison uses Chroma's direct semantic top-k ordering without the lexical reranking and source-role selection logic. It isolates the contribution of the hybrid selector.
 
+In the latest comparison run, direct `semantic_top_k` retrieval recorded an
+F1 of `0.115`. This is a separate comparison path from the controlled
+`semantic_only` variant in the cumulative ablation, which recorded an F1 of
+`0.605`. The paper's controlled retrieval tables use the `0.605` ablation
+value; the two values must not be substituted for each other.
+
 ### Component Ablation
 
 The controlled component ablation runs the same 200 cases through four cumulative stages:
