@@ -18,7 +18,7 @@ policy/control mappings.
 
 | Phase | Status | Evidence |
 |---|---|---|
-| 1. Define the research problem | Complete | `research/paper_outline.md`, `research/validation_protocol.md` |
+| 1. Define the research problem | Complete | `research/phase_status.md`, `research/validation_protocol.md` |
 | 2. Prepare trusted source material | Complete | `data/regulations/`, `data/policies/`, `data/controls/`, `data/frameworks/`, `data/validation/validation_profile.json` |
 | 3. Ingest and validate documents | Complete | `src/policy_compliance_tracker/retrieval/ingest.py`, ingestion tests, Chroma index |
 | 4. Implement hybrid retrieval | Complete | `src/policy_compliance_tracker/retrieval/`, `research/run_experiments.py`, `research/run_ablation.py` |
@@ -27,7 +27,7 @@ policy/control mappings.
 | 7. Add auditability and human review | Complete | evidence records, review gates, tracker schema, exports |
 | 8. Evaluate with public validated data | Complete | `research/evaluate_claimrag.py`, `research/evaluate_claimrag_pipeline.py` |
 | 9. Perform ablation and error analysis | Complete | `research/ablation_results_200.md`, `research/hybrid_failure_analysis_200.md`, generated result JSON files |
-| 10. Produce the final research contribution | Complete as a project artifact | `research/final_paper_draft.md`, consolidated results report, limitations, and reproducibility command |
+| 10. Produce the final research contribution | Complete as a project artifact | consolidated results report, limitations, and reproducibility command |
 
 ## Latest measured evidence
 
@@ -47,7 +47,7 @@ It records:
 - Candidate control-alignment rate: `0.725`
 - Complete test suite: `52 passed`
 
-## Final paper checklist
+## Reporting checklist
 
 1. Use the generated report as the results source.
 2. Report project-maintained labels separately from public benchmark labels.

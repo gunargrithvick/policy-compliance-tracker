@@ -1,6 +1,6 @@
 # Reproducible Research-Gap Evaluation
 
-This tracked summary records the latest paper-ready evaluation snapshot. The
+This tracked summary records the latest project evaluation snapshot. The
 timestamped JSON and CSV artifacts are generated locally in `research/results/`
 and are intentionally ignored by Git; run `python research/run_gap_suite.py`
 to recreate them.

@@ -1,4 +1,4 @@
-"""Simple lexical baseline used for the paper's retrieval comparison."""
+"""Simple lexical baseline used for the retrieval comparison."""
 
 import re
 from typing import Dict, Iterable, List, Tuple

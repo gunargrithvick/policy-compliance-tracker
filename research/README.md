@@ -1,11 +1,9 @@
 # Research Evaluation Package
 
-This folder contains the reproducible evaluation materials for the Policy Compliance Tracker paper.
+This folder contains the reproducible evaluation materials for the Policy Compliance Tracker project.
 
 The current phase-by-phase implementation status is recorded in
 `research/phase_status.md`.
-
-The paper-ready project draft is in `research/final_paper_draft.md`.
 
 ## Research Questions
 
@@ -45,8 +43,8 @@ This comparison uses Chroma's direct semantic top-k ordering without the lexical
 In the latest comparison run, direct `semantic_top_k` retrieval recorded an
 F1 of `0.115`. This is a separate comparison path from the controlled
 `semantic_only` variant in the cumulative ablation, which recorded an F1 of
-`0.605`. The paper's controlled retrieval tables use the `0.605` ablation
-value; the two values must not be substituted for each other.
+`0.605`. The controlled ablation summary uses the `0.605` value; the two
+values must not be substituted for each other.
 
 ### Component Ablation
 
@@ -142,7 +140,7 @@ The validator checks source consistency for expected files, policies, and contro
 
 ## Run the Experiment
 
-To run the complete research suite and create one paper-ready report:
+To run the complete research suite and create one consolidated report:
 
 ```powershell
 python research/run_gap_suite.py
@@ -151,7 +149,7 @@ python research/run_gap_suite.py
 This runs the retrieval comparison, component ablation, labelled end-to-end
 mapping evaluation, ClaimRAG legal-evidence evaluation, ClaimRAG full-pipeline
 evaluation, and the complete test suite. The consolidated Markdown report is
-written to `research/results/`; the tracked paper-ready results snapshot is
+written to `research/results/`; the tracked results snapshot is
 [`gap_evaluation_report.md`](gap_evaluation_report.md).
 
 From the repository root:
@@ -161,11 +159,11 @@ python -m policy_compliance_tracker.retrieval.ingest
 python research/run_experiments.py
 ```
 
-The runner writes timestamped JSON and CSV files to `research/results/`. These generated outputs are ignored by Git. Use the tracked [`gap_evaluation_report.md`](gap_evaluation_report.md) for the paper's results snapshot, the JSON summary for detailed metrics, and the CSV case rows for error analysis. The comparison includes `rag_hybrid`, `semantic_top_k`, and `keyword_baseline`, with method-specific cold-start and warm-run latency reporting. The separate component ablation is run with `python research/run_ablation.py`. Rebuilding the index removes only the Chroma collection and preserves the SQLite tracker database.
+The runner writes timestamped JSON and CSV files to `research/results/`. These generated outputs are ignored by Git. Use the tracked [`gap_evaluation_report.md`](gap_evaluation_report.md) for the consolidated results snapshot, the JSON summary for detailed metrics, and the CSV case rows for error analysis. The comparison includes `rag_hybrid`, `semantic_top_k`, and `keyword_baseline`, with method-specific cold-start and warm-run latency reporting. The separate component ablation is run with `python research/run_ablation.py`. Rebuilding the index removes only the Chroma collection and preserves the SQLite tracker database.
 
 The 200-case Hybrid-RAG error analysis is documented in `research/hybrid_failure_analysis_200.md`. The listed failures are retained as observed limitations and are not removed to improve the aggregate score.
 
-Before making final paper claims, create a new `final_manual_review_*.json` artifact for all 200 cases and the required edge cases. It should record the returned policies, controls, priorities, evidence quality, review gates, and failure flags; older manual-review artifacts must not be presented as 200-case results.
+For a broader review audit, create a new `final_manual_review_*.json` artifact for all 200 cases and the required edge cases. It records the returned policies, controls, priorities, evidence quality, review gates, and failure flags; older manual-review artifacts should not be presented as current 200-case results.
 
 Generate the current artifact with:
 
@@ -183,16 +181,3 @@ Report the counts separately: the retrieval experiment's `error_cases` is the nu
 - Include missed-source and unexpected-source cases in the error analysis.
 - Separate retrieval metrics from end-to-end agent quality.
 - Treat tracker priorities, owners, and policy changes as recommendations requiring compliance review.
-
-## Paper Structure
-
-Use the following project-specific sections in the paper:
-
-1. Problem and motivation
-2. Related work on legal/compliance NLP, RAG, and agentic workflows
-3. System architecture and implementation
-4. Structured obligation and evidence model
-5. Evaluation dataset and protocol
-6. RAG-versus-keyword results
-7. Error analysis and limitations
-8. Conclusion and future work

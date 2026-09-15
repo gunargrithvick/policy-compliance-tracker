@@ -132,7 +132,7 @@ policy-compliance-tracker/
 |   |-- dashboard.py        # Streamlit dashboard
 |   `-- demo_end_to_end.py  # Local end-to-end demonstration
 |-- data/                   # Regulations, policies, and control PDFs
-|-- research/               # Dataset, experiments, metrics, and paper notes
+|-- research/               # Dataset, experiments, and evaluation metrics
 |-- tests/                  # Automated tests
 |-- docs/
 |   |-- screenshots/        # Dashboard screenshots used in this README
@@ -210,7 +210,7 @@ Run the retrieval evaluation after building the retrieval index:
 python research/run_experiments.py
 ```
 
-The experiment compares hybrid RAG, direct semantic top-k, and a keyword baseline. It writes per-case JSON/CSV results to `research/results/` and reports cold-start and warm-run latency. The direct semantic top-k comparison is separate from the controlled component ablation; the paper tables use the controlled `semantic_only` baseline from `research/run_ablation.py`.
+The experiment compares hybrid RAG, direct semantic top-k, and a keyword baseline. It writes per-case JSON/CSV results to `research/results/` and reports cold-start and warm-run latency. The direct semantic top-k comparison is separate from the controlled component ablation; the controlled `semantic_only` baseline is defined in `research/run_ablation.py`.
 
 Run the controlled retrieval-component ablation:
 

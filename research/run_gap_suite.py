@@ -1,4 +1,4 @@
-"""Run the reproducible research suite and write one paper-ready report.
+"""Run the reproducible research suite and write one consolidated report.
 
 Run from the repository root:
     python research/run_gap_suite.py
